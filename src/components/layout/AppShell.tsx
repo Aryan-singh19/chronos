@@ -64,7 +64,7 @@ export function AppShell({ children, showSidebar = true }: AppShellProps) {
     return () => window.removeEventListener('keydown', handler)
   }, [])
 
-  const themeIcon = theme === 'dark' ? Moon : theme === 'light' ? Sun : Monitor
+  const ThemeIcon = theme === 'dark' ? Moon : theme === 'light' ? Sun : Monitor
 
   return (
     <div className="flex h-screen overflow-hidden bg-[rgb(var(--bg))]">
@@ -151,7 +151,7 @@ export function AppShell({ children, showSidebar = true }: AppShellProps) {
                   onClick={() => setTheme(theme === 'dark' ? 'light' : theme === 'light' ? 'system' : 'dark')}
                   className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-[rgb(var(--text-muted))] hover:text-[rgb(var(--text))] hover:bg-[rgb(var(--surface-2))] transition-all capitalize"
                 >
-                  <themeIcon size={15} />
+                  <ThemeIcon size={15} />
                   {theme ?? 'system'} mode
                 </button>
 

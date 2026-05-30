@@ -233,6 +233,7 @@ export interface TimelineTemplate {
   defaultNodes: Partial<TimelineNode>[]
   defaultLanes: Partial<Lane>[]
   timeScale: TimeScale
+  customScaleUnit?: string
 }
 
 // ─── Search Result ────────────────────────────────────────────────────────────
