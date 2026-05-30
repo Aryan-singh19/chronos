@@ -140,7 +140,8 @@ export function suggestRelatedNodes(
       const daysDiff = Math.abs(node.date - n.date) / (1000 * 60 * 60 * 24)
       const temporalScore = Math.max(0, 1 - daysDiff / 365) * 0.1
 
-      return { node: n, score: textSimilarity + tagScore + temporalScore }
+      const semanticScore = textSimilarity + tagScore
+      return { node: n, score: semanticScore > 0 ? semanticScore + temporalScore : 0 }
     })
     .filter((s) => s.score > 0.05)
     .sort((a, b) => b.score - a.score)
