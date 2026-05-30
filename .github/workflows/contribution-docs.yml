@@ -1,0 +1,49 @@
+name: Contribution Docs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - CONTRIBUTING.md
+      - .github/workflows/contribution-docs.yml
+  pull_request:
+    branches: [main]
+    paths:
+      - CONTRIBUTING.md
+      - .github/workflows/contribution-docs.yml
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verify CONTRIBUTING.md
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check required sections
+        shell: bash
+        run: |
+          required=(
+            "Development Setup"
+            "Contribution Flow"
+            "Code Guidelines"
+            "Pull Request Checklist"
+            "Security"
+          )
+
+          for section in "${required[@]}"; do
+            if ! grep -q "## ${section}" CONTRIBUTING.md; then
+              echo "Missing CONTRIBUTING.md section: ${section}"
+              exit 1
+            fi
+          done
+
+      - name: Check no placeholder text
+        run: |
+          if grep -Eiq 'todo|tbd|your-org|your-name' CONTRIBUTING.md; then
+            echo "CONTRIBUTING.md contains placeholder text."
+            exit 1
+          fi

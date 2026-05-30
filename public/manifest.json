@@ -1,0 +1,17 @@
+{
+  "name": "Chronos — Map the past. Build the future.",
+  "short_name": "Chronos",
+  "description": "Local-first infinite timeline & knowledge compiler",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1e40af",
+  "theme_color": "#2563eb",
+  "orientation": "any",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "screenshots": [],
+  "categories": ["productivity", "utilities"],
+  "prefer_related_applications": false
+}

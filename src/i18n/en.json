@@ -1,0 +1,74 @@
+{
+  "app": {
+    "name": "Chronos",
+    "tagline": "Map the past. Build the future."
+  },
+  "nav": {
+    "projects": "Projects",
+    "search": "Search",
+    "recent": "Recent",
+    "settings": "Settings"
+  },
+  "actions": {
+    "create": "Create",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "save": "Save",
+    "export": "Export",
+    "import": "Import",
+    "duplicate": "Duplicate",
+    "rename": "Rename",
+    "archive": "Archive"
+  },
+  "timeline": {
+    "newEvent": "New Event",
+    "addEvent": "Add Event",
+    "noEvents": "Double-click to add your first event",
+    "ruler": "Timeline Ruler",
+    "scrubber": "Timeline Scrubber"
+  },
+  "node": {
+    "title": "Title",
+    "description": "Description",
+    "date": "Date",
+    "priority": "Priority",
+    "status": "Status",
+    "tags": "Tags",
+    "shape": "Shape",
+    "color": "Color",
+    "lock": "Lock",
+    "pin": "Pin",
+    "high": "High",
+    "medium": "Medium",
+    "low": "Low",
+    "todo": "To Do",
+    "inProgress": "In Progress",
+    "done": "Done",
+    "archived": "Archived"
+  },
+  "views": {
+    "timeline": "Timeline",
+    "gantt": "Gantt",
+    "kanban": "Kanban",
+    "calendar": "Calendar"
+  },
+  "ai": {
+    "analyze": "AI Analyze",
+    "analyzing": "Analyzing…",
+    "suggestions": "AI Suggestions",
+    "suggestedTags": "Suggested tags"
+  },
+  "settings": {
+    "profile": "Profile",
+    "appearance": "Appearance",
+    "shortcuts": "Shortcuts",
+    "storage": "Storage & Backup",
+    "security": "Security",
+    "about": "About"
+  },
+  "errors": {
+    "loadFailed": "Failed to load data",
+    "saveFailed": "Failed to save",
+    "exportFailed": "Export failed"
+  }
+}
