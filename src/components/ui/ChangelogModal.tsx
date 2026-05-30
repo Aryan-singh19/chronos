@@ -67,7 +67,7 @@ export function ChangelogModal() {
                     <Sparkles size={20} />
                   </div>
                   <div>
-                    <h2 className="font-bold text-lg">What's New in Chronos</h2>
+                    <h2 className="font-bold text-lg">What&apos;s New in Chronos</h2>
                     <p className="text-blue-200 text-sm">Version 1.0.0 — Initial Release 🎉</p>
                   </div>
                 </div>
@@ -104,7 +104,7 @@ export function ChangelogModal() {
                 onClick={handleClose}
                 className="bg-blue-600 text-white px-5 py-2 rounded-xl text-sm font-medium hover:bg-blue-700 transition-colors"
               >
-                Let's Go! 🚀
+                Let&apos;s Go! 🚀
               </motion.button>
             </div>
           </motion.div>

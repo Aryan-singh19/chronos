@@ -163,7 +163,7 @@ export default function SettingsPage() {
 
                   <div className="flex items-center justify-between p-4 bg-[rgb(var(--surface-2))] rounded-xl">
                     <div>
-                      <p className="text-sm font-medium">Show "Now" Marker</p>
+                      <p className="text-sm font-medium">Show &quot;Now&quot; Marker</p>
                       <p className="text-xs text-[rgb(var(--text-muted))]">Display current date indicator on timeline</p>
                     </div>
                     <button
