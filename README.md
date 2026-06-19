@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://aryan-singh19.github.io/chronos/"><img alt="Live demo" src="https://img.shields.io/badge/live-GitHub%20Pages-0969da?style=for-the-badge&logo=github"></a>
+  <a href="https://chronos-rho-six.vercel.app/"><img alt="Live app" src="https://img.shields.io/badge/live-Chronos%20Cloud-2563eb?style=for-the-badge&logo=vercel"></a>
   <a href="https://github.com/Aryan-singh19/chronos/actions/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/Aryan-singh19/chronos/ci.yml?branch=main&style=for-the-badge&label=CI"></a>
   <a href="LICENSE"><img alt="License" src="https://img.shields.io/github/license/Aryan-singh19/chronos?style=for-the-badge"></a>
   <a href="https://github.com/Aryan-singh19/chronos/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/Aryan-singh19/chronos?style=for-the-badge"></a>
@@ -18,7 +18,10 @@
 ## Repository
 
 - GitHub: <https://github.com/Aryan-singh19/chronos>
+- Production app: <https://chronos-rho-six.vercel.app/>
 - Recommended production host: Vercel
+- Recommended database: Prisma Postgres
+- Billing provider: Stripe
 
 ## Why Chronos
 
@@ -63,6 +66,15 @@ npm run dev
 
 Open <http://localhost:3000>.
 
+## Live SaaS
+
+- Production URL: <https://chronos-rho-six.vercel.app/>
+- Sign up: <https://chronos-rho-six.vercel.app/signup>
+- Sign in: <https://chronos-rho-six.vercel.app/signin>
+- Workspace: <https://chronos-rho-six.vercel.app/workspace>
+- Billing: <https://chronos-rho-six.vercel.app/billing>
+- Health check: <https://chronos-rho-six.vercel.app/api/health>
+
 ## Scripts
 
 ```bash
@@ -84,6 +96,7 @@ npm run admin:create      # upsert an admin user
 - Recommended hosting: Vercel
 - Recommended database: Prisma Postgres via the Vercel Marketplace
 - Recommended billing: Stripe
+- Current production deployment: `chronos-rho-six.vercel.app`
 
 Read [docs/production-deployment.md](docs/production-deployment.md) for the full deployment checklist.
 

@@ -1,10 +1,29 @@
-import { BillingPortalButton } from '@/components/saas/BillingPortalButton'
+import { CheckCircle2 } from 'lucide-react'
 import { BillingCheckoutButton } from '@/components/saas/BillingCheckoutButton'
+import { BillingPortalButton } from '@/components/saas/BillingPortalButton'
 import { AppShell } from '@/components/layout/AppShell'
 import { requireCurrentMembership } from '@/lib/server/auth'
 import { getWorkspaceBilling } from '@/lib/server/saas'
 
 const PLAN_ORDER: Array<'STARTER' | 'GROWTH' | 'ENTERPRISE'> = ['STARTER', 'GROWTH', 'ENTERPRISE']
+
+const PLAN_COPY = {
+  STARTER: {
+    price: '$19',
+    description: 'Best for solo builders starting out.',
+    features: ['1 workspace owner', 'Private timeline engine', 'Manual exports'],
+  },
+  GROWTH: {
+    price: '$79',
+    description: 'For active teams and design partners.',
+    features: ['Up to 15 collaborators', 'Invite flows and billing portal', 'Priority support'],
+  },
+  ENTERPRISE: {
+    price: '$249',
+    description: 'For serious enterprise rollout and support.',
+    features: ['Advanced rollout support', 'High-touch onboarding', 'Longer retention windows'],
+  },
+} as const
 
 export const dynamic = 'force-dynamic'
 
@@ -19,26 +38,79 @@ export default async function BillingPage() {
   return (
     <AppShell>
       <div className="flex-1 overflow-y-auto">
-        <div className="mx-auto max-w-6xl px-6 py-8">
-          <div className="mb-8">
+        <div className="mx-auto max-w-6xl px-6 py-5">
+          <div className="section-shell surface-panel mb-8 rounded-[32px] p-7">
             <p className="text-sm font-medium text-[rgb(var(--text-muted))]">Billing and plans</p>
             <h1 className="mt-1 text-3xl font-bold">Subscription controls</h1>
             <p className="mt-2 text-sm text-[rgb(var(--text-muted))]">
-              Current plan: {billing.currentPlan}. Stripe checkout is wired with a graceful local demo fallback.
+              Current plan: {billing.currentPlan}. Stripe checkout, billing portal, and webhooks are connected to production.
             </p>
           </div>
 
           <div className="grid gap-4 lg:grid-cols-3">
             {PLAN_ORDER.map((plan) => (
-              <div key={plan} className="rounded-3xl border border-[rgb(var(--border))] bg-[rgb(var(--surface))] p-6">
-                <p className="text-xl font-bold">{plan.charAt(0) + plan.slice(1).toLowerCase()}</p>
-                <p className="mt-2 text-sm text-[rgb(var(--text-muted))]">
-                  {plan === 'STARTER'
-                    ? 'Best for solo builders starting out.'
-                    : plan === 'GROWTH'
-                      ? 'For active teams and design partners.'
-                      : 'For serious enterprise rollout and support.'}
+              <div
+                key={plan}
+                className={
+                  plan === 'GROWTH'
+                    ? 'rounded-[30px] bg-slate-950 p-6 text-slate-50 shadow-[0_24px_64px_rgba(15,23,42,0.28)]'
+                    : 'surface-panel rounded-[30px] p-6'
+                }
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <p className="text-xl font-bold">{plan.charAt(0) + plan.slice(1).toLowerCase()}</p>
+                  {billing.currentPlan.toUpperCase() === plan && (
+                    <span
+                      className={
+                        plan === 'GROWTH'
+                          ? 'rounded-full bg-cyan-400/15 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-cyan-300'
+                          : 'rounded-full bg-[rgba(var(--accent),0.08)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-[rgb(var(--accent))]'
+                      }
+                    >
+                      Current
+                    </span>
+                  )}
+                </div>
+
+                <p className="mt-4 text-4xl font-bold">
+                  {PLAN_COPY[plan].price}
+                  <span
+                    className={
+                      plan === 'GROWTH'
+                        ? 'text-base font-medium text-slate-400'
+                        : 'text-base font-medium text-[rgb(var(--text-muted))]'
+                    }
+                  >
+                    {' '}
+                    /mo
+                  </span>
                 </p>
+                <p
+                  className={
+                    plan === 'GROWTH'
+                      ? 'mt-2 text-sm text-slate-400'
+                      : 'mt-2 text-sm text-[rgb(var(--text-muted))]'
+                  }
+                >
+                  {PLAN_COPY[plan].description}
+                </p>
+
+                <div className="mt-5 space-y-3">
+                  {PLAN_COPY[plan].features.map((feature) => (
+                    <div
+                      key={feature}
+                      className={
+                        plan === 'GROWTH'
+                          ? 'flex items-center gap-3 rounded-2xl bg-slate-900/75 px-4 py-3 text-sm text-slate-200'
+                          : 'flex items-center gap-3 rounded-2xl bg-[rgba(var(--surface-2),0.9)] px-4 py-3 text-sm'
+                      }
+                    >
+                      <CheckCircle2 size={16} className="text-emerald-500" />
+                      <span>{feature}</span>
+                    </div>
+                  ))}
+                </div>
+
                 <div className="mt-6">
                   <BillingCheckoutButton plan={plan} />
                 </div>
@@ -46,7 +118,7 @@ export default async function BillingPage() {
             ))}
           </div>
 
-          <div className="mt-8 rounded-3xl border border-[rgb(var(--border))] bg-[rgb(var(--surface))] p-6">
+          <div className="surface-panel mt-8 rounded-[30px] p-6">
             <div className="flex items-center justify-between gap-4">
               <p className="text-sm font-medium text-[rgb(var(--text-muted))]">Billing activity</p>
               <BillingPortalButton />
@@ -56,7 +128,10 @@ export default async function BillingPage() {
                 <p className="text-sm text-[rgb(var(--text-muted))]">No billing activity yet.</p>
               ) : (
                 billing.invoices.map((invoice) => (
-                  <div key={invoice.id} className="flex items-center justify-between gap-4 rounded-2xl bg-[rgb(var(--surface-2))] px-4 py-3">
+                  <div
+                    key={invoice.id}
+                    className="flex items-center justify-between gap-4 rounded-2xl bg-[rgba(var(--surface-2),0.92)] px-4 py-3"
+                  >
                     <div>
                       <p className="font-medium">{invoice.label}</p>
                       <p className="text-sm text-[rgb(var(--text-muted))]">{invoice.issuedOn}</p>
