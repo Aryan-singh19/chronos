@@ -3,7 +3,9 @@ import { env } from '@/lib/env'
 
 export function getStripe() {
   if (!env.STRIPE_SECRET_KEY) return null
-  return new Stripe(env.STRIPE_SECRET_KEY)
+  return new Stripe(env.STRIPE_SECRET_KEY, {
+    httpClient: Stripe.createNodeHttpClient(),
+  })
 }
 
 export function getStripePriceId(plan: 'STARTER' | 'GROWTH' | 'ENTERPRISE') {

@@ -3,6 +3,8 @@ import { env } from '@/lib/env'
 import { getCurrentMembership } from '@/lib/server/auth'
 import { getStripe } from '@/lib/stripe'
 
+export const runtime = 'nodejs'
+
 export async function POST() {
   const membership = await getCurrentMembership()
   if (!membership) {

@@ -4,6 +4,8 @@ import { prisma } from '@/lib/prisma'
 import { env } from '@/lib/env'
 import { getStripe } from '@/lib/stripe'
 
+export const runtime = 'nodejs'
+
 function normalizePlan(plan?: string | null): PlanTier | null {
   if (plan === 'STARTER' || plan === 'GROWTH' || plan === 'ENTERPRISE') {
     return plan
