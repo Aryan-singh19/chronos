@@ -1,28 +1,29 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
-import { motion, AnimatePresence } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import {
+  Activity,
+  BarChart3,
+  ChevronLeft,
   Clock,
+  Command,
+  CreditCard,
   FolderOpen,
+  Monitor,
+  Moon,
   Search,
   Settings,
-  CreditCard,
+  Sparkles,
   Sun,
-  Moon,
-  Monitor,
-  ChevronLeft,
-  Command,
   Users,
-  BarChart3,
-  Activity,
 } from 'lucide-react'
 import { useTheme } from 'next-themes'
-import { useAppStore } from '@/stores'
 import { AuthControls } from '@/components/saas/AuthControls'
-import { CommandPalette } from '@/components/ui/CommandPalette'
 import { SystemHealthWidget } from '@/components/ui/SystemHealthWidget'
+import { CommandPalette } from '@/components/ui/CommandPalette'
+import { useAppStore } from '@/stores'
 import { cn } from '@/lib/utils'
 
 interface AppShellProps {
@@ -39,6 +40,16 @@ const NAV_ITEMS = [
   { icon: Clock, label: 'Recent', href: '/recent' },
   { icon: Settings, label: 'Settings', href: '/settings' },
 ]
+
+function getPageLabel(pathname: string) {
+  if (pathname.startsWith('/workspace')) return 'Workspace overview'
+  if (pathname.startsWith('/billing')) return 'Subscription and revenue controls'
+  if (pathname.startsWith('/team')) return 'People, roles, and invitations'
+  if (pathname.startsWith('/dashboard')) return 'Projects and execution'
+  if (pathname.startsWith('/search')) return 'Search and command navigation'
+  if (pathname.startsWith('/recent')) return 'Recent visits and activity'
+  return 'Chronos Cloud'
+}
 
 export function AppShell({ children, showSidebar = true }: AppShellProps) {
   const router = useRouter()
@@ -57,14 +68,14 @@ export function AppShell({ children, showSidebar = true }: AppShellProps) {
     return () => window.removeEventListener('resize', check)
   }, [])
 
-  // Keyboard shortcut: Cmd+K
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault()
+    const handler = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
+        event.preventDefault()
         setCmdOpen(true)
       }
     }
+
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
   }, [])
@@ -72,51 +83,63 @@ export function AppShell({ children, showSidebar = true }: AppShellProps) {
   const ThemeIcon = theme === 'dark' ? Moon : theme === 'light' ? Sun : Monitor
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[rgb(var(--bg))]">
-      {/* Desktop Sidebar */}
+    <div className="flex h-screen overflow-hidden bg-transparent">
       {showSidebar && !isMobile && (
         <AnimatePresence initial={false}>
           {sidebarOpen && (
             <motion.aside
               initial={{ width: 0, opacity: 0 }}
-              animate={{ width: 260, opacity: 1 }}
+              animate={{ width: 280, opacity: 1 }}
               exit={{ width: 0, opacity: 0 }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="flex flex-col h-full bg-[rgb(var(--surface))] border-r border-[rgb(var(--border))] overflow-hidden shrink-0"
+              className="surface-panel m-3 mr-0 flex h-[calc(100%-1.5rem)] shrink-0 flex-col overflow-hidden rounded-[28px]"
             >
-              {/* Logo */}
-              <div className="flex items-center gap-3 px-5 py-4 border-b border-[rgb(var(--border))]">
-                <div className="w-8 h-8 rounded-lg bg-[rgb(var(--accent))] flex items-center justify-center" style={{ background: 'rgb(var(--accent))' }}>
-                  <Clock size={16} className="text-white" />
+              <div className="flex items-center gap-3 border-b border-[rgb(var(--border))] px-5 py-4">
+                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[rgb(var(--accent))] shadow-[0_10px_24px_rgba(37,99,235,0.26)]">
+                  <Clock size={17} className="text-white" />
                 </div>
-                <span className="font-bold text-base tracking-tight">Chronos</span>
+                <div>
+                  <span className="block text-base font-bold tracking-tight">Chronos</span>
+                  <span className="text-xs text-[rgb(var(--text-muted))]">Team timeline OS</span>
+                </div>
               </div>
 
-              {/* Search / Cmd+K */}
               <div className="px-3 py-3">
                 <button
                   onClick={() => setCmdOpen(true)}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg bg-[rgb(var(--surface-2))] text-[rgb(var(--text-muted))] hover:text-[rgb(var(--text))] text-sm transition-colors"
+                  className="flex w-full items-center gap-2.5 rounded-2xl border border-[rgb(var(--border))] bg-[rgba(var(--surface-2),0.92)] px-3 py-3 text-sm text-[rgb(var(--text-muted))] transition-colors hover:text-[rgb(var(--text))]"
                 >
                   <Command size={14} />
                   <span className="flex-1 text-left">Search or run command</span>
-                  <kbd className="text-xs bg-[rgb(var(--border))] px-1.5 py-0.5 rounded font-mono">⌘K</kbd>
+                  <kbd className="rounded-lg bg-[rgb(var(--border))] px-1.5 py-0.5 font-mono text-xs">⌘K</kbd>
                 </button>
               </div>
 
-              {/* Nav */}
-              <nav className="flex-1 px-3 space-y-0.5 overflow-y-auto">
+              <div className="px-3 pb-2">
+                <div className="rounded-2xl bg-slate-950 px-4 py-4 text-slate-50 shadow-[0_18px_40px_rgba(15,23,42,0.28)]">
+                  <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-300">
+                    <Sparkles size={13} />
+                    Live SaaS
+                  </div>
+                  <p className="mt-3 text-sm font-semibold">
+                    Timelines, collaboration, billing, and auth now share one polished shell.
+                  </p>
+                </div>
+              </div>
+
+              <nav className="flex-1 space-y-1 overflow-y-auto px-3">
                 {NAV_ITEMS.map((item) => {
                   const active = pathname.startsWith(item.href)
+
                   return (
                     <button
                       key={item.href}
                       onClick={() => router.push(item.href)}
                       className={cn(
-                        'w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all',
+                        'flex w-full items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-medium transition-all',
                         active
-                          ? 'bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300'
-                          : 'text-[rgb(var(--text-muted))] hover:text-[rgb(var(--text))] hover:bg-[rgb(var(--surface-2))]',
+                          ? 'bg-blue-50 text-blue-700 shadow-sm dark:bg-blue-950 dark:text-blue-300'
+                          : 'text-[rgb(var(--text-muted))] hover:bg-[rgba(var(--surface-2),0.92)] hover:text-[rgb(var(--text))]',
                       )}
                     >
                       <item.icon size={17} />
@@ -124,7 +147,7 @@ export function AppShell({ children, showSidebar = true }: AppShellProps) {
                       {active && (
                         <motion.div
                           layoutId="nav-indicator"
-                          className="ml-auto w-1.5 h-1.5 rounded-full bg-blue-500"
+                          className="ml-auto h-1.5 w-1.5 rounded-full bg-blue-500"
                         />
                       )}
                     </button>
@@ -132,29 +155,33 @@ export function AppShell({ children, showSidebar = true }: AppShellProps) {
                 })}
               </nav>
 
-              {/* Bottom: theme + profile */}
-              <div className="px-3 py-3 border-t border-[rgb(var(--border))] space-y-1">
-                {/* System health */}
+              <div className="space-y-1 border-t border-[rgb(var(--border))] px-3 py-3">
                 <button
-                  onClick={() => setHealthOpen((o) => !o)}
+                  onClick={() => setHealthOpen((open) => !open)}
                   className={cn(
-                    'w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all',
+                    'flex w-full items-center gap-3 rounded-2xl px-3 py-2.5 text-sm transition-all',
                     systemHealth.isHealthy
-                      ? 'text-[rgb(var(--text-muted))] hover:bg-[rgb(var(--surface-2))]'
-                      : 'text-amber-600 bg-amber-50 dark:bg-amber-950',
+                      ? 'text-[rgb(var(--text-muted))] hover:bg-[rgba(var(--surface-2),0.92)]'
+                      : 'bg-amber-50 text-amber-600 dark:bg-amber-950',
                   )}
                 >
                   <Activity size={15} />
                   <span className="flex-1 text-left">System Health</span>
-                  <span className={cn('text-xs font-medium', systemHealth.isHealthy ? 'text-emerald-500' : 'text-amber-500')}>
+                  <span
+                    className={cn(
+                      'text-xs font-medium',
+                      systemHealth.isHealthy ? 'text-emerald-500' : 'text-amber-500',
+                    )}
+                  >
                     {systemHealth.fps}fps
                   </span>
                 </button>
 
-                {/* Theme toggle */}
                 <button
-                  onClick={() => setTheme(theme === 'dark' ? 'light' : theme === 'light' ? 'system' : 'dark')}
-                  className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-[rgb(var(--text-muted))] hover:text-[rgb(var(--text))] hover:bg-[rgb(var(--surface-2))] transition-all capitalize"
+                  onClick={() =>
+                    setTheme(theme === 'dark' ? 'light' : theme === 'light' ? 'system' : 'dark')
+                  }
+                  className="flex w-full items-center gap-3 rounded-2xl px-3 py-2.5 text-sm capitalize text-[rgb(var(--text-muted))] transition-all hover:bg-[rgba(var(--surface-2),0.92)] hover:text-[rgb(var(--text))]"
                 >
                   <ThemeIcon size={15} />
                   {theme ?? 'system'} mode
@@ -162,13 +189,14 @@ export function AppShell({ children, showSidebar = true }: AppShellProps) {
 
                 <button
                   onClick={() => router.push('/settings')}
-                  className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-[rgb(var(--text-muted))] hover:text-[rgb(var(--text))] hover:bg-[rgb(var(--surface-2))] transition-all"
+                  className="flex w-full items-center gap-3 rounded-2xl px-3 py-2.5 text-sm text-[rgb(var(--text-muted))] transition-all hover:bg-[rgba(var(--surface-2),0.92)] hover:text-[rgb(var(--text))]"
                 >
-                  <div className="w-6 h-6 rounded-full bg-[rgb(var(--accent))] flex items-center justify-center text-white text-xs font-bold" style={{ background: 'rgb(var(--accent))' }}>
+                  <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[rgb(var(--accent))] text-xs font-bold text-white">
                     {settings?.profile.name?.[0]?.toUpperCase() ?? 'U'}
                   </div>
-                  <span className="flex-1 text-left truncate">{settings?.profile.name ?? 'User'}</span>
+                  <span className="flex-1 truncate text-left">{settings?.profile.name ?? 'User'}</span>
                 </button>
+
                 <AuthControls />
               </div>
             </motion.aside>
@@ -176,56 +204,61 @@ export function AppShell({ children, showSidebar = true }: AppShellProps) {
         </AnimatePresence>
       )}
 
-      {/* Main content area */}
-      <div className="flex flex-col flex-1 min-w-0 h-full overflow-hidden">
-        {/* Topbar */}
-        <header className="h-[var(--topbar-height)] flex items-center gap-3 px-4 border-b border-[rgb(var(--border))] bg-[rgb(var(--surface))] shrink-0">
+      <div className="flex h-full min-w-0 flex-1 flex-col overflow-hidden">
+        <header className="mx-3 mb-0 mt-3 flex h-[var(--topbar-height)] shrink-0 items-center gap-3 rounded-[24px] border border-[rgb(var(--border))] bg-[rgba(var(--surface),0.82)] px-4 backdrop-blur-xl">
           {showSidebar && !isMobile && (
             <button
-              onClick={() => setSidebarOpen((o) => !o)}
-              className="p-1.5 rounded-lg text-[rgb(var(--text-muted))] hover:bg-[rgb(var(--surface-2))] hover:text-[rgb(var(--text))] transition-all"
+              onClick={() => setSidebarOpen((open) => !open)}
+              className="rounded-xl p-1.5 text-[rgb(var(--text-muted))] transition-all hover:bg-[rgb(var(--surface-2))] hover:text-[rgb(var(--text))]"
             >
-              <motion.div animate={{ rotate: sidebarOpen ? 0 : 180 }} transition={{ type: 'spring', damping: 20 }}>
+              <motion.div
+                animate={{ rotate: sidebarOpen ? 0 : 180 }}
+                transition={{ type: 'spring', damping: 20 }}
+              >
                 <ChevronLeft size={18} />
               </motion.div>
             </button>
           )}
 
-          <div className="flex-1" />
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-medium text-[rgb(var(--text-muted))]">
+              {getPageLabel(pathname)}
+            </p>
+          </div>
 
           <button
             onClick={() => setCmdOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-[rgb(var(--text-muted))] bg-[rgb(var(--surface-2))] hover:bg-[rgb(var(--border))] transition-all"
+            className="flex items-center gap-1.5 rounded-xl bg-[rgb(var(--surface-2))] px-3 py-1.5 text-xs text-[rgb(var(--text-muted))] transition-all hover:bg-[rgb(var(--border))]"
           >
             <Command size={13} />
             <span>⌘K</span>
           </button>
         </header>
 
-        {/* Page content */}
-        <main className="flex-1 overflow-hidden flex flex-col">
-          {children}
-        </main>
+        <main className="flex flex-1 flex-col overflow-hidden px-3 pb-3 pt-3">{children}</main>
       </div>
 
-      {/* Mobile bottom nav */}
       {isMobile && (
-        <nav className="fixed bottom-0 left-0 right-0 h-16 bg-[rgb(var(--surface))] border-t border-[rgb(var(--border))] flex items-center justify-around px-2 z-50">
+        <nav className="fixed bottom-3 left-3 right-3 z-50 flex h-16 items-center justify-around rounded-[24px] border border-[rgb(var(--border))] bg-[rgba(var(--surface),0.92)] px-2 backdrop-blur-xl">
           {NAV_ITEMS.map((item) => {
             const active = pathname.startsWith(item.href)
+
             return (
               <button
                 key={item.href}
                 onClick={() => router.push(item.href)}
                 className={cn(
-                  'flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-all',
+                  'relative flex flex-col items-center gap-1 rounded-xl px-4 py-2 transition-all',
                   active ? 'text-blue-600' : 'text-[rgb(var(--text-muted))]',
                 )}
               >
                 <item.icon size={22} />
                 <span className="text-[10px] font-medium">{item.label}</span>
                 {active && (
-                  <motion.div layoutId="mobile-nav" className="absolute bottom-1 w-1 h-1 rounded-full bg-blue-500" />
+                  <motion.div
+                    layoutId="mobile-nav"
+                    className="absolute bottom-1 h-1 w-1 rounded-full bg-blue-500"
+                  />
                 )}
               </button>
             )
@@ -233,10 +266,8 @@ export function AppShell({ children, showSidebar = true }: AppShellProps) {
         </nav>
       )}
 
-      {/* Command Palette */}
       <CommandPalette open={cmdOpen} onClose={() => setCmdOpen(false)} />
 
-      {/* System Health Widget */}
       <AnimatePresence>
         {healthOpen && <SystemHealthWidget onClose={() => setHealthOpen(false)} />}
       </AnimatePresence>

@@ -32,7 +32,7 @@ export function BillingCheckoutButton({ plan }: { plan: 'STARTER' | 'GROWTH' | '
       <button
         onClick={startCheckout}
         disabled={loading}
-        className="rounded-full bg-[rgb(var(--accent))] px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-60"
+        className="w-full rounded-2xl bg-[rgb(var(--accent))] px-4 py-3 text-sm font-semibold text-white shadow-[0_12px_28px_rgba(37,99,235,0.28)] transition hover:-translate-y-0.5 hover:opacity-95 disabled:opacity-60"
       >
         {loading ? 'Redirecting...' : `Choose ${plan.toLowerCase()}`}
       </button>

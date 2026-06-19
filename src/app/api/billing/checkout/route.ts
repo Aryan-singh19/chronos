@@ -5,6 +5,8 @@ import { env } from '@/lib/env'
 import { getCurrentMembership } from '@/lib/server/auth'
 import { getStripe, getStripePriceId } from '@/lib/stripe'
 
+export const runtime = 'nodejs'
+
 const checkoutSchema = z.object({
   plan: z.enum(['STARTER', 'GROWTH', 'ENTERPRISE']),
 })
@@ -60,6 +62,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ ok: true, url: session.url })
   } catch (error) {
+    console.error('Billing checkout failed', error)
     const message = error instanceof Error ? error.message : 'Unable to start checkout.'
     return NextResponse.json({ ok: false, error: message }, { status: 400 })
   }
