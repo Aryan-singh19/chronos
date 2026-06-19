@@ -8,17 +8,19 @@ import {
   FolderOpen,
   Search,
   Settings,
+  CreditCard,
   Sun,
   Moon,
   Monitor,
   ChevronLeft,
   Command,
-  Bell,
-  User,
+  Users,
+  BarChart3,
   Activity,
 } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import { useAppStore } from '@/stores'
+import { AuthControls } from '@/components/saas/AuthControls'
 import { CommandPalette } from '@/components/ui/CommandPalette'
 import { SystemHealthWidget } from '@/components/ui/SystemHealthWidget'
 import { cn } from '@/lib/utils'
@@ -29,7 +31,10 @@ interface AppShellProps {
 }
 
 const NAV_ITEMS = [
+  { icon: BarChart3, label: 'Workspace', href: '/workspace' },
   { icon: FolderOpen, label: 'Projects', href: '/dashboard' },
+  { icon: Users, label: 'Team', href: '/team' },
+  { icon: CreditCard, label: 'Billing', href: '/billing' },
   { icon: Search, label: 'Search', href: '/search' },
   { icon: Clock, label: 'Recent', href: '/recent' },
   { icon: Settings, label: 'Settings', href: '/settings' },
@@ -155,7 +160,6 @@ export function AppShell({ children, showSidebar = true }: AppShellProps) {
                   {theme ?? 'system'} mode
                 </button>
 
-                {/* Profile */}
                 <button
                   onClick={() => router.push('/settings')}
                   className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-[rgb(var(--text-muted))] hover:text-[rgb(var(--text))] hover:bg-[rgb(var(--surface-2))] transition-all"
@@ -165,6 +169,7 @@ export function AppShell({ children, showSidebar = true }: AppShellProps) {
                   </div>
                   <span className="flex-1 text-left truncate">{settings?.profile.name ?? 'User'}</span>
                 </button>
+                <AuthControls />
               </div>
             </motion.aside>
           )}

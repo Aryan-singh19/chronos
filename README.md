@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <strong>Local-first infinite timelines for research, stories, projects, and history.</strong>
+  <strong>Chronos Cloud: local-first timelines upgraded into a full-stack SaaS workspace.</strong>
 </p>
 
 <p align="center">
@@ -15,14 +15,14 @@
   <a href="https://github.com/Aryan-singh19/chronos/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/Aryan-singh19/chronos?style=for-the-badge"></a>
 </p>
 
-## Live App
+## Repository
 
-- GitHub Pages: <https://aryan-singh19.github.io/chronos/>
-- Repository: <https://github.com/Aryan-singh19/chronos>
+- GitHub: <https://github.com/Aryan-singh19/chronos>
+- Recommended production host: Vercel
 
 ## Why Chronos
 
-Chronos is a private, zero-cost timeline and knowledge compiler. It runs in the browser, stores data in IndexedDB, works offline as a PWA, and gives you multiple ways to visualize the same body of work.
+Chronos now combines its original local-first timeline engine with a real SaaS foundation: authenticated accounts, team workspaces, billing surfaces, protected routes, server-backed operational dashboards, and Stripe-ready subscription flows.
 
 ## Highlights
 
@@ -31,7 +31,9 @@ Chronos is a private, zero-cost timeline and knowledge compiler. It runs in the 
 - Local AI helpers for summaries, tag suggestions, priority detection, date inference, and related-node discovery.
 - Local-first persistence with browser storage, version snapshots, imports, and exports.
 - Rich project workspace with command palette, keyboard shortcuts, theme controls, PWA assets, and Docker support.
-- CI, GitHub Pages publishing, contribution checks, and open-source docs ready for collaboration.
+- Full-stack SaaS backend with Prisma, secure cookie sessions, memberships, invitations, audit logs, and subscriptions.
+- Stripe Checkout, Stripe Billing Portal, webhooks, and production deployment guidance for Vercel + Postgres.
+- CI, migration deployment workflow, health endpoint, seed scripts, and admin tooling.
 
 ## Tech Stack
 
@@ -41,18 +43,22 @@ Chronos is a private, zero-cost timeline and knowledge compiler. It runs in the 
 | Language | TypeScript |
 | UI | React, Tailwind CSS, Radix UI, Lucide |
 | State | Zustand + Immer |
-| Storage | IndexedDB via `idb` |
+| Client storage | IndexedDB via `idb` |
+| Server storage | Prisma ORM + PostgreSQL |
+| Auth | Secure HTTP-only cookie sessions |
+| Billing | Stripe Checkout + Billing Portal |
 | Motion | Framer Motion |
 | Testing | Vitest |
-| Runtime | Bun |
+| Runtime | Node.js / Bun compatible |
 
 ## Quick Start
 
 ```bash
 git clone https://github.com/Aryan-singh19/chronos.git
 cd chronos
-bun install
-bun dev
+npm install
+cp .env.example .env.local
+npm run dev
 ```
 
 Open <http://localhost:3000>.
@@ -60,13 +66,26 @@ Open <http://localhost:3000>.
 ## Scripts
 
 ```bash
-bun dev          # start local dev server
-bun run build   # production build
-bun start        # start production server
-bun test         # run Vitest
-bun run lint     # run Next lint
-bun run type-check
+npm run dev               # start local dev server
+npm run build             # production build
+npm run start             # start production server
+npm run test:run          # run Vitest once
+npm run lint              # run Next lint
+npm run type-check        # run TypeScript checks
+npm run db:generate       # generate Prisma client
+npm run db:migrate:dev    # create a development migration
+npm run db:migrate:deploy # apply migrations in CI or production
+npm run db:seed           # seed first workspace/admin
+npm run admin:create      # upsert an admin user
 ```
+
+## Production deployment
+
+- Recommended hosting: Vercel
+- Recommended database: Prisma Postgres via the Vercel Marketplace
+- Recommended billing: Stripe
+
+Read [docs/production-deployment.md](docs/production-deployment.md) for the full deployment checklist.
 
 ## Docker
 

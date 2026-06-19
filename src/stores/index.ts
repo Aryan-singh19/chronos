@@ -83,6 +83,17 @@ export const useAppStore = create<AppState>()(
         if (!settings) {
           settings = DEFAULT_SETTINGS
           await settingsDB.save(settings)
+        } else {
+          settings = {
+            ...DEFAULT_SETTINGS,
+            ...settings,
+            profile: {
+              ...DEFAULT_SETTINGS.profile,
+              ...settings.profile,
+            },
+            recentItems: settings.recentItems ?? [],
+          }
+          await settingsDB.save(settings)
         }
         set((s) => {
           s.settings = settings!

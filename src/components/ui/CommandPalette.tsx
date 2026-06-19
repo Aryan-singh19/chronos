@@ -5,11 +5,11 @@ import { useRouter } from 'next/navigation'
 import { Command } from 'cmdk'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
-  Search, FolderOpen, Clock, Plus, Settings, Moon, Sun,
-  Monitor, Download, Upload, Trash2, HelpCircle, Keyboard,
+  Search, FolderOpen, Clock, Settings, Moon, Sun,
+  Monitor, Keyboard, CreditCard, Users, BarChart3,
 } from 'lucide-react'
 import { useTheme } from 'next-themes'
-import { useProjectsStore, useTimelineStore, useAppStore } from '@/stores'
+import { useProjectsStore } from '@/stores'
 
 interface CommandPaletteProps {
   open: boolean
@@ -20,7 +20,6 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
   const router = useRouter()
   const { setTheme } = useTheme()
   const { projects } = useProjectsStore()
-  const { settings } = useAppStore()
   const [search, setSearch] = useState('')
 
   useEffect(() => {
@@ -94,7 +93,10 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
               {/* Navigation */}
               <Command.Group heading={<span className="px-2 py-1 text-xs font-semibold text-[rgb(var(--text-muted))] uppercase tracking-wider">Navigate</span>}>
                 {[
+                  { icon: BarChart3, label: 'Workspace Overview', action: () => router.push('/workspace') },
                   { icon: FolderOpen, label: 'Go to Dashboard', action: () => router.push('/dashboard') },
+                  { icon: Users, label: 'Open Team Directory', action: () => router.push('/team') },
+                  { icon: CreditCard, label: 'Open Billing', action: () => router.push('/billing') },
                   { icon: Settings, label: 'Open Settings', action: () => router.push('/settings') },
                   { icon: Clock, label: 'Recent Items', action: () => router.push('/recent') },
                 ].map((item) => (

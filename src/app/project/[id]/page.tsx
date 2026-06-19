@@ -5,7 +5,7 @@ import { useRouter, useParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { Plus, ChevronRight, Clock } from 'lucide-react'
 import { AppShell } from '@/components/layout/AppShell'
-import { useProjectsStore, useTimelineStore } from '@/stores'
+import { useAppStore, useProjectsStore, useTimelineStore } from '@/stores'
 import { timelinesDB } from '@/lib/db'
 import { formatRelative } from '@/lib/utils'
 import type { Timeline } from '@/types'
@@ -13,6 +13,7 @@ import type { Timeline } from '@/types'
 export default function ProjectPage() {
   const router = useRouter()
   const { id } = useParams<{ id: string }>()
+  const { addRecentItem } = useAppStore()
   const { projects, loadProjects, updateProject } = useProjectsStore()
   const { createTimeline } = useTimelineStore()
   const [projectTimelines, setProjectTimelines] = useState<Timeline[]>([])
@@ -33,6 +34,11 @@ export default function ProjectPage() {
       cancelled = true
     }
   }, [id, loadProjects])
+
+  useEffect(() => {
+    if (!project) return
+    addRecentItem({ id: project.id, type: 'project', title: project.name, projectId: project.id })
+  }, [addRecentItem, project])
 
   const handleCreateTimeline = async () => {
     const tl = await createTimeline(id, { name: 'Untitled Timeline' })
