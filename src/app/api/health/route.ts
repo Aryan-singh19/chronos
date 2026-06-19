@@ -1,12 +1,9 @@
-import { PHASE_PRODUCTION_BUILD } from 'next/constants'
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
-export async function GET() {
-  if (process.env.NEXT_PHASE === PHASE_PRODUCTION_BUILD) {
-    return NextResponse.json({ ok: true, status: 'build' })
-  }
+export const dynamic = 'force-dynamic'
 
+export async function GET() {
   try {
     await prisma.$queryRaw`SELECT 1`
     return NextResponse.json({ ok: true, status: 'healthy' })
