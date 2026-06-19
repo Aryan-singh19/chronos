@@ -18,6 +18,8 @@ dist/
 .env.development.local
 .env.test.local
 .env.production.local
+prisma/dev.db
+prisma/dev.db-journal
 
 # Logs
 npm-debug.log*

@@ -1,0 +1,170 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum PlanTier {
+  STARTER
+  GROWTH
+  ENTERPRISE
+}
+
+enum MembershipRole {
+  OWNER
+  ADMIN
+  MEMBER
+  BILLING
+  VIEWER
+}
+
+enum MembershipStatus {
+  ACTIVE
+  INVITED
+  SUSPENDED
+}
+
+enum ProjectStatus {
+  ACTIVE
+  ARCHIVED
+  DRAFT
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  DONE
+  BLOCKED
+}
+
+enum SubscriptionStatus {
+  TRIALING
+  ACTIVE
+  PAST_DUE
+  CANCELED
+}
+
+model User {
+  id            String       @id @default(cuid())
+  name          String
+  email         String       @unique
+  passwordHash  String
+  avatarUrl     String?
+  sessionVersion Int         @default(0)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  memberships   Membership[]
+  invitationsSent Invitation[] @relation("InvitedBy")
+  auditLogs     AuditLog[]
+}
+
+model Workspace {
+  id            String         @id @default(cuid())
+  name          String
+  slug          String         @unique
+  plan          PlanTier       @default(STARTER)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  memberships   Membership[]
+  projects      WorkspaceProject[]
+  invitations   Invitation[]
+  subscription  Subscription?
+  auditLogs     AuditLog[]
+}
+
+model Membership {
+  id          String           @id @default(cuid())
+  userId      String
+  workspaceId String
+  role        MembershipRole   @default(OWNER)
+  status      MembershipStatus @default(ACTIVE)
+  joinedAt    DateTime         @default(now())
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workspace   Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, workspaceId])
+}
+
+model WorkspaceProject {
+  id          String             @id @default(cuid())
+  workspaceId String
+  name        String
+  description String?
+  color       String             @default("#2563eb")
+  status      ProjectStatus      @default(ACTIVE)
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+  workspace   Workspace          @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  timelines   WorkspaceTimeline[]
+}
+
+model WorkspaceTimeline {
+  id          String          @id @default(cuid())
+  projectId   String
+  name        String
+  description String?
+  startDate   DateTime?
+  endDate     DateTime?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  project     WorkspaceProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  nodes       WorkspaceNode[]
+}
+
+model WorkspaceNode {
+  id          String       @id @default(cuid())
+  timelineId  String
+  title       String
+  description String?
+  date        DateTime?
+  status      TaskStatus   @default(TODO)
+  priority    String       @default("medium")
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  timeline    WorkspaceTimeline @relation(fields: [timelineId], references: [id], onDelete: Cascade)
+}
+
+model Subscription {
+  id                    String             @id @default(cuid())
+  workspaceId           String             @unique
+  plan                  PlanTier           @default(STARTER)
+  status                SubscriptionStatus @default(TRIALING)
+  stripeCustomerId      String?
+  stripeSubscriptionId  String?
+  stripePriceId         String?
+  currentPeriodEnd      DateTime?
+  cancelAtPeriodEnd     Boolean            @default(false)
+  createdAt             DateTime           @default(now())
+  updatedAt             DateTime           @updatedAt
+  workspace             Workspace          @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+}
+
+model Invitation {
+  id          String         @id @default(cuid())
+  workspaceId String
+  email       String
+  role        MembershipRole @default(MEMBER)
+  token       String         @unique
+  expiresAt   DateTime
+  acceptedAt  DateTime?
+  invitedById String
+  createdAt   DateTime       @default(now())
+  workspace   Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  invitedBy   User           @relation("InvitedBy", fields: [invitedById], references: [id], onDelete: Cascade)
+}
+
+model AuditLog {
+  id          String    @id @default(cuid())
+  workspaceId String
+  userId      String?
+  action      String
+  targetType  String
+  targetId    String?
+  metadata    String?
+  createdAt   DateTime  @default(now())
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
