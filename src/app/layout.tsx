@@ -3,10 +3,26 @@ import { ThemeProvider } from 'next-themes'
 import '@/styles/globals.css'
 
 export const metadata: Metadata = {
-  title: 'Chronos — Map the past. Build the future.',
+  metadataBase: new URL('https://chronos-rho-six.vercel.app'),
+  title: 'Chronos Cloud — Timeline intelligence for teams that ship',
   description:
-    'A local-first infinite timeline & knowledge compiler. Zero cost, zero cloud, infinite depth.',
+    'Chronos Cloud combines a local-first timeline engine with a polished SaaS shell for teams, billing, workspace visibility, and launch execution.',
   manifest: '/manifest.json',
+  applicationName: 'Chronos Cloud',
+  openGraph: {
+    title: 'Chronos Cloud',
+    description:
+      'Plan launches, map research, and run collaborative timelines in one polished product shell.',
+    url: 'https://chronos-rho-six.vercel.app',
+    siteName: 'Chronos Cloud',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Chronos Cloud',
+    description:
+      'Timeline intelligence for teams that ship — local-first core, SaaS-grade product shell.',
+  },
   appleWebApp: { capable: true, statusBarStyle: 'black-translucent', title: 'Chronos' },
   icons: {
     icon: [

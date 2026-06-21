@@ -25,15 +25,56 @@ const PLAN_COPY = {
   },
 } as const
 
+function getBillingBanner(
+  checkout?: string,
+  portal?: string,
+): { tone: 'success' | 'warning' | 'info'; title: string; detail: string } | null {
+  if (checkout === 'success') {
+    return {
+      tone: 'success',
+      title: 'Checkout started successfully',
+      detail: 'Stripe will redirect back here after subscription setup and webhook processing.',
+    }
+  }
+  if (checkout === 'canceled') {
+    return {
+      tone: 'warning',
+      title: 'Checkout was canceled',
+      detail: 'No changes were applied. You can restart a plan upgrade anytime.',
+    }
+  }
+  if (checkout === 'demo') {
+    return {
+      tone: 'info',
+      title: 'Demo checkout fallback',
+      detail: 'Stripe was unavailable, so the app fell back to a safe demo path.',
+    }
+  }
+  if (portal === 'demo') {
+    return {
+      tone: 'info',
+      title: 'Demo billing portal',
+      detail: 'No Stripe customer exists yet for this workspace, so the app showed the fallback path.',
+    }
+  }
+  return null
+}
+
 export const dynamic = 'force-dynamic'
 
-export default async function BillingPage() {
+export default async function BillingPage({
+  searchParams,
+}: {
+  searchParams?: { checkout?: string; portal?: string }
+}) {
   const membership = await requireCurrentMembership()
   const billing = await getWorkspaceBilling(membership.workspaceId)
 
   if (!billing) {
     return null
   }
+
+  const banner = getBillingBanner(searchParams?.checkout, searchParams?.portal)
 
   return (
     <AppShell>
@@ -46,6 +87,21 @@ export default async function BillingPage() {
               Current plan: {billing.currentPlan}. Stripe checkout, billing portal, and webhooks are connected to production.
             </p>
           </div>
+
+          {banner && (
+            <div
+              className={`mb-6 rounded-[28px] border px-5 py-4 ${
+                banner.tone === 'success'
+                  ? 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-950 dark:bg-emerald-950/40 dark:text-emerald-300'
+                  : banner.tone === 'warning'
+                    ? 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-950 dark:bg-amber-950/40 dark:text-amber-300'
+                    : 'border-[rgb(var(--border))] bg-[rgba(var(--surface-2),0.92)] text-[rgb(var(--text-muted))]'
+              }`}
+            >
+              <p className="font-semibold">{banner.title}</p>
+              <p className="mt-1 text-sm">{banner.detail}</p>
+            </div>
+          )}
 
           <div className="grid gap-4 lg:grid-cols-3">
             {PLAN_ORDER.map((plan) => (
@@ -120,9 +176,15 @@ export default async function BillingPage() {
 
           <div className="surface-panel mt-8 rounded-[30px] p-6">
             <div className="flex items-center justify-between gap-4">
-              <p className="text-sm font-medium text-[rgb(var(--text-muted))]">Billing activity</p>
+              <div>
+                <p className="text-sm font-medium text-[rgb(var(--text-muted))]">Billing activity</p>
+                <p className="mt-1 text-xs text-[rgb(var(--text-muted))]">
+                  Recent events and billing-adjacent workspace actions.
+                </p>
+              </div>
               <BillingPortalButton />
             </div>
+
             <div className="mt-4 space-y-3">
               {billing.invoices.length === 0 ? (
                 <p className="text-sm text-[rgb(var(--text-muted))]">No billing activity yet.</p>
