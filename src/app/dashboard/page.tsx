@@ -6,13 +6,11 @@ import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import {
   ArrowRight,
-  Clock,
   FolderOpen,
   LayoutGrid,
   List,
   Plus,
   Sparkles,
-  Star,
   Target,
   Users,
 } from 'lucide-react'
@@ -64,10 +62,10 @@ export default function DashboardPage() {
                 <p className="text-sm font-medium text-[rgb(var(--text-muted))]">
                   {greeting}, {settings?.profile.name ?? 'there'}
                 </p>
-                <h1 className="mt-1 text-3xl font-bold">Project workspace</h1>
+                <h1 className="mt-1 text-3xl font-bold">Projects</h1>
                 <p className="mt-2 max-w-2xl text-sm text-[rgb(var(--text-muted))]">
-                  This is your operating layer for launches, client programs, and roadmap execution.
-                  Build timelines, revisit active work, and keep momentum visible across the workspace.
+                  Keep launches, research tracks, and active delivery work organized in one
+                  workspace your team can revisit quickly.
                 </p>
               </div>
 
@@ -97,12 +95,12 @@ export default function DashboardPage() {
                   <p className="text-sm font-medium text-[rgb(var(--text-muted))]">Workspace momentum</p>
                   <h2 className="mt-1 text-2xl font-bold">{plan.name} plan active</h2>
                   <p className="mt-2 max-w-xl text-sm text-[rgb(var(--text-muted))]">
-                    Your product shell now supports teams, billing, and operator visibility without
-                    losing the speed of the original local-first project studio.
+                    Chronos keeps project planning, billing context, and team activity close at
+                    hand without getting in the way of day-to-day work.
                   </p>
                 </div>
                 <div className="rounded-2xl bg-emerald-100 px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-emerald-700">
-                  Launch-ready
+                  Active
                 </div>
               </div>
 
@@ -127,7 +125,7 @@ export default function DashboardPage() {
                   },
                   {
                     icon: Target,
-                    label: 'Execution health',
+                    label: 'Current activity',
                     value: filtered.length === 0 ? 'Quiet' : 'Live',
                     detail:
                       filtered.length === 0
@@ -161,13 +159,16 @@ export default function DashboardPage() {
                   <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
                     <p className="font-medium">No activity captured yet</p>
                     <p className="mt-1 text-sm text-slate-400">
-                      Open a project or timeline and Chronos will build a lightweight operator feed
-                      here automatically.
+                      Open a project or timeline and this space will start reflecting recent work
+                      automatically.
                     </p>
                   </div>
                 ) : (
                   activityFeed.map((item) => (
-                    <div key={item.id} className="rounded-2xl border border-slate-800 bg-slate-900/80 p-3">
+                    <div
+                      key={item.id}
+                      className="rounded-2xl border border-slate-800 bg-slate-900/80 p-3"
+                    >
                       <p className="font-medium">{item.title}</p>
                       <p className="mt-1 text-sm text-slate-400">{item.detail}</p>
                     </div>

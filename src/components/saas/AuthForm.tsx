@@ -64,7 +64,7 @@ export function AuthForm({ mode }: AuthFormProps) {
           ) : (
             <LockKeyhole size={13} className="text-[rgb(var(--accent))]" />
           )}
-          {mode === 'signup' ? 'Create workspace' : 'Secure sign in'}
+          {mode === 'signup' ? 'Create account' : 'Secure sign in'}
         </div>
         <div className="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-600 dark:text-emerald-300">
           {mode === 'signup' ? 'Trial ready' : 'Protected'}
@@ -76,16 +76,16 @@ export function AuthForm({ mode }: AuthFormProps) {
       </h1>
       <p className="mt-3 text-sm leading-6 text-[rgb(var(--text-muted))]">
         {mode === 'signup'
-          ? 'Provision a real account, seeded workspace, and billing-ready SaaS foundation in one step.'
-          : 'Access your workspace, project timelines, team controls, and subscription settings.'}
+          ? 'Create your account, set up a workspace, and start planning with your team in minutes.'
+          : 'Access your workspace, timelines, team settings, and billing controls.'}
       </p>
 
       <div className="mt-5 grid gap-2 rounded-3xl border border-[rgb(var(--border))] bg-[rgba(var(--surface),0.7)] p-4">
         {[
           mode === 'signup'
             ? 'Workspace, membership, and starter plan are created automatically'
-            : 'Cookie session, workspace context, and protected routes are restored securely',
-          'Stripe-backed billing flows and team invitations are ready',
+            : 'Your session, workspace context, and protected access are restored securely',
+          'Billing and team invitation flows are ready when you need them',
         ].map((item) => (
           <div key={item} className="flex items-start gap-3 text-sm text-[rgb(var(--text-muted))]">
             <CheckCircle2 size={16} className="mt-0.5 shrink-0 text-emerald-500" />

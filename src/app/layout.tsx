@@ -6,13 +6,13 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://chronos-rho-six.vercel.app'),
   title: 'Chronos Cloud — Timeline intelligence for teams that ship',
   description:
-    'Chronos Cloud combines a local-first timeline engine with a polished SaaS shell for teams, billing, workspace visibility, and launch execution.',
+    'Chronos Cloud helps teams plan launches, map research, and run collaborative timelines in one focused workspace.',
   manifest: '/manifest.json',
   applicationName: 'Chronos Cloud',
   openGraph: {
     title: 'Chronos Cloud',
     description:
-      'Plan launches, map research, and run collaborative timelines in one polished product shell.',
+      'Plan launches, map research, and run collaborative timelines in one focused product.',
     url: 'https://chronos-rho-six.vercel.app',
     siteName: 'Chronos Cloud',
     type: 'website',
@@ -21,9 +21,12 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Chronos Cloud',
     description:
-      'Timeline intelligence for teams that ship — local-first core, SaaS-grade product shell.',
+      'Timeline intelligence for teams that ship — shared planning, research, and delivery in one product.',
   },
   appleWebApp: { capable: true, statusBarStyle: 'black-translucent', title: 'Chronos' },
+  other: {
+    'mobile-web-app-capable': 'yes',
+  },
   icons: {
     icon: [
       { url: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },

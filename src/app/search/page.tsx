@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 import { Clock3, FolderOpen, Search, Shapes, Sparkles } from 'lucide-react'
 import { AppShell } from '@/components/layout/AppShell'
@@ -38,6 +39,7 @@ export default function SearchPage() {
         title: project.name,
         subtitle: project.description ?? 'Project workspace',
         type: 'Project',
+        href: `/project/${project.id}`,
       }))
 
     const timelineMatches = timelines
@@ -51,6 +53,7 @@ export default function SearchPage() {
         title: timeline.name,
         subtitle: timeline.description ?? 'Timeline',
         type: 'Timeline',
+        href: `/project/${timeline.projectId}/timeline/${timeline.id}`,
       }))
 
     const nodeMatches = nodes
@@ -59,12 +62,17 @@ export default function SearchPage() {
           node.title.toLowerCase().includes(normalized) ||
           node.description?.toLowerCase().includes(normalized),
       )
-      .map((node) => ({
-        id: `node-${node.id}`,
-        title: node.title,
-        subtitle: node.description || 'Timeline node',
-        type: 'Node',
-      }))
+      .map((node) => {
+        const timeline = timelines.find((item) => item.id === node.timelineId)
+
+        return {
+          id: `node-${node.id}`,
+          title: node.title,
+          subtitle: node.description || 'Timeline node',
+          type: 'Node',
+          href: timeline ? `/project/${timeline.projectId}/timeline/${timeline.id}` : '/search',
+        }
+      })
 
     return [...projectMatches, ...timelineMatches, ...nodeMatches].slice(0, 18)
   }, [nodes, projects, query, timelines])
@@ -77,8 +85,7 @@ export default function SearchPage() {
             <p className="text-sm font-medium text-[rgb(var(--text-muted))]">Global search</p>
             <h1 className="mt-1 text-3xl font-bold">Find any project, timeline, or node</h1>
             <p className="mt-2 max-w-2xl text-sm text-[rgb(var(--text-muted))]">
-              Search across the local workspace model and quickly re-enter the exact part of Chronos
-              you need.
+              Search across the workspace and jump back into the exact project or timeline you need.
             </p>
           </div>
 
@@ -142,11 +149,14 @@ export default function SearchPage() {
                 <div className="mt-4 grid gap-3 sm:grid-cols-2">
                   {[
                     'Search project names to jump between client workspaces quickly.',
-                    'Use milestone words like “launch” or “alpha” to find timeline nodes.',
+                    'Use milestone words like "launch" or "alpha" to find timeline nodes.',
                     'Open search after a busy session to rediscover recently created structures.',
-                    'The command palette stays useful for actions, while this page is better for discovery.',
+                    'Use this page for discovery when the command palette feels too narrow.',
                   ].map((hint) => (
-                    <div key={hint} className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4 text-sm text-slate-300">
+                    <div
+                      key={hint}
+                      className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4 text-sm text-slate-300"
+                    >
                       {hint}
                     </div>
                   ))}
@@ -160,14 +170,18 @@ export default function SearchPage() {
                   <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-3xl bg-[rgb(var(--surface-2))]">
                     <Search size={24} className="text-[rgb(var(--text-muted))]" />
                   </div>
-                  <p className="font-semibold">No matches for “{query}”</p>
+                  <p className="font-semibold">No matches for &quot;{query}&quot;</p>
                   <p className="mt-1 text-sm text-[rgb(var(--text-muted))]">
                     Try a broader keyword or search by project, milestone, or research theme.
                   </p>
                 </div>
               ) : (
                 results.map((result) => (
-                  <div key={result.id} className="surface-panel rounded-[26px] p-4">
+                  <Link
+                    key={result.id}
+                    href={result.href}
+                    className="surface-panel block rounded-[26px] p-4 transition hover:-translate-y-0.5 hover:border-[rgb(var(--accent))]"
+                  >
                     <div className="flex items-center justify-between gap-4">
                       <div>
                         <p className="font-semibold">{result.title}</p>
@@ -177,7 +191,7 @@ export default function SearchPage() {
                         {result.type}
                       </span>
                     </div>
-                  </div>
+                  </Link>
                 ))
               )}
             </div>

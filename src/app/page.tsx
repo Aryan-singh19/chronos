@@ -27,8 +27,8 @@ export default function RootPage() {
   return (
     <main className="min-h-screen overflow-y-auto bg-[rgb(var(--bg))] text-[rgb(var(--text))]">
       <section className="relative isolate overflow-hidden">
-        <div className="hero-grid absolute inset-0 opacity-70" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(14,165,233,0.18),transparent_32%),radial-gradient(circle_at_80%_20%,rgba(16,185,129,0.15),transparent_24%),linear-gradient(180deg,rgba(255,255,255,0.02),transparent)]" />
+        <div className="pointer-events-none hero-grid absolute inset-0 opacity-70" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(14,165,233,0.18),transparent_32%),radial-gradient(circle_at_80%_20%,rgba(16,185,129,0.15),transparent_24%),linear-gradient(180deg,rgba(255,255,255,0.02),transparent)]" />
 
         <div className="mx-auto flex max-w-7xl flex-col gap-10 px-6 py-8 lg:px-10 lg:py-12">
           <div className="flex items-center justify-between gap-4">
@@ -80,7 +80,7 @@ export default function RootPage() {
                 className="inline-flex items-center gap-2 rounded-full border border-[rgb(var(--border))] bg-[rgba(var(--surface),0.84)] px-4 py-2 text-sm text-[rgb(var(--text-muted))] shadow-sm"
               >
                 <Sparkles size={14} className="text-[rgb(var(--accent))]" />
-                From local-first canvas to full SaaS operating system
+                Built for product teams that plan in detail
               </motion.div>
 
               <motion.h1
@@ -98,8 +98,8 @@ export default function RootPage() {
                 transition={{ delay: 0.1 }}
                 className="mt-5 max-w-2xl text-lg leading-8 text-[rgb(var(--text-muted))]"
               >
-                Chronos now feels like a launch-ready SaaS with a premium shell around the original
-                infinite timeline engine: auth, teams, analytics, billing, and product operations.
+                Chronos gives teams one calm place to shape launch plans, capture research, and
+                stay aligned from first draft to delivery.
               </motion.p>
 
               <motion.div
@@ -128,17 +128,17 @@ export default function RootPage() {
                   {
                     icon: Users,
                     title: 'Team-ready',
-                    detail: 'Shared workspaces, roles, invites, and activity views',
+                    detail: 'Shared workspaces, roles, invites, and recent activity',
                   },
                   {
                     icon: ShieldCheck,
                     title: 'Private by default',
-                    detail: 'Local-first architecture with export control and secure sessions',
+                    detail: 'Secure sessions, local-first editing, and export-friendly workflows',
                   },
                   {
                     icon: CheckCircle2,
-                    title: 'Operator visibility',
-                    detail: 'Billing, adoption, and execution layers on top of the core canvas',
+                    title: 'Clear visibility',
+                    detail: 'Billing, workspace health, and execution signals in one place',
                   },
                 ].map((item) => (
                   <div key={item.title} className="surface-panel rounded-[28px] p-5">
@@ -153,21 +153,21 @@ export default function RootPage() {
                 {[
                   {
                     icon: Activity,
-                    label: 'System health',
-                    value: 'Healthy',
-                    meta: 'Production database and auth routes are online',
+                    label: 'Workspace health',
+                    value: 'Stable',
+                    meta: 'Core app flows, auth, and data sync are available',
                   },
                   {
                     icon: CreditCard,
-                    label: 'Billing stack',
-                    value: 'Stripe-ready',
-                    meta: 'Checkout, portal, prices, and webhooks are wired',
+                    label: 'Billing',
+                    value: 'Configured',
+                    meta: 'Plans, checkout, and account controls are in place',
                   },
                   {
                     icon: Globe2,
-                    label: 'Live app',
-                    value: 'chronos-rho-six',
-                    meta: 'Running on Vercel with Prisma Postgres',
+                    label: 'Live product',
+                    value: 'Chronos Cloud',
+                    meta: 'Ready for sign-in, workspace setup, and team invites',
                   },
                 ].map((item) => (
                   <div key={item.label} className="metric-card rounded-[28px] p-5">
@@ -221,7 +221,7 @@ export default function RootPage() {
                 </div>
 
                 <div className="mt-6 rounded-3xl bg-slate-950 p-5 text-slate-50">
-                  <p className="text-sm font-medium text-slate-400">What changed in this upgrade</p>
+                  <p className="text-sm font-medium text-slate-400">What you get</p>
                   <div className="mt-4 space-y-3">
                     {PRODUCT_UPDATES.map((update) => (
                       <div key={update} className="flex items-start gap-3 text-sm">
@@ -234,7 +234,7 @@ export default function RootPage() {
 
                 <div className="mt-5 rounded-3xl border border-[rgb(var(--border))] bg-[rgba(var(--surface),0.8)] p-4">
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[rgb(var(--text-muted))]">
-                    Start here
+                    Get started
                   </p>
                   <div className="mt-3 flex flex-wrap gap-3">
                     <Link

@@ -32,29 +32,29 @@ function getBillingBanner(
   if (checkout === 'success') {
     return {
       tone: 'success',
-      title: 'Checkout started successfully',
-      detail: 'Stripe will redirect back here after subscription setup and webhook processing.',
+      title: 'Plan update in progress',
+      detail: 'Stripe has the request. Your workspace will reflect the new plan after checkout and sync complete.',
     }
   }
   if (checkout === 'canceled') {
     return {
       tone: 'warning',
-      title: 'Checkout was canceled',
-      detail: 'No changes were applied. You can restart a plan upgrade anytime.',
+      title: 'Checkout canceled',
+      detail: 'Nothing changed. You can restart the upgrade whenever you are ready.',
     }
   }
   if (checkout === 'demo') {
     return {
       tone: 'info',
-      title: 'Demo checkout fallback',
-      detail: 'Stripe was unavailable, so the app fell back to a safe demo path.',
+      title: 'Preview checkout mode',
+      detail: 'Stripe was unavailable, so Chronos used a safe preview path instead.',
     }
   }
   if (portal === 'demo') {
     return {
       tone: 'info',
-      title: 'Demo billing portal',
-      detail: 'No Stripe customer exists yet for this workspace, so the app showed the fallback path.',
+      title: 'Preview billing portal',
+      detail: 'No Stripe customer exists for this workspace yet, so Chronos showed the fallback path.',
     }
   }
   return null
@@ -82,9 +82,10 @@ export default async function BillingPage({
         <div className="mx-auto max-w-6xl px-6 py-5">
           <div className="section-shell surface-panel mb-8 rounded-[32px] p-7">
             <p className="text-sm font-medium text-[rgb(var(--text-muted))]">Billing and plans</p>
-            <h1 className="mt-1 text-3xl font-bold">Subscription controls</h1>
+            <h1 className="mt-1 text-3xl font-bold">Plans and billing</h1>
             <p className="mt-2 text-sm text-[rgb(var(--text-muted))]">
-              Current plan: {billing.currentPlan}. Stripe checkout, billing portal, and webhooks are connected to production.
+              Current plan: {billing.currentPlan}. Review pricing, switch plans, and manage billing
+              without leaving the workspace.
             </p>
           </div>
 
@@ -179,7 +180,7 @@ export default async function BillingPage({
               <div>
                 <p className="text-sm font-medium text-[rgb(var(--text-muted))]">Billing activity</p>
                 <p className="mt-1 text-xs text-[rgb(var(--text-muted))]">
-                  Recent events and billing-adjacent workspace actions.
+                  Recent invoices and subscription events for this workspace.
                 </p>
               </div>
               <BillingPortalButton />

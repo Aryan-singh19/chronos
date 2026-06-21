@@ -17,6 +17,24 @@ export default function RecentPage() {
 
   const projectMap = new Map(projects.map((project) => [project.id, project.name]))
   const recentItems = settings?.recentItems ?? []
+  const projectByTimelineId = new Map(
+    projects.flatMap((project) => project.timelineIds.map((timelineId) => [timelineId, project.id] as const)),
+  )
+
+  const getHref = (item: (typeof recentItems)[number]) => {
+    if (item.type === 'project') {
+      return `/project/${item.id}`
+    }
+
+    const projectId = item.projectId ?? (item.timelineId ? projectByTimelineId.get(item.timelineId) : undefined)
+    const timelineId = item.timelineId ?? (item.type === 'timeline' ? item.id : undefined)
+
+    if (projectId && timelineId) {
+      return `/project/${projectId}/timeline/${timelineId}`
+    }
+
+    return '/dashboard'
+  }
 
   return (
     <AppShell>
@@ -24,10 +42,10 @@ export default function RecentPage() {
         <div className="mx-auto max-w-4xl px-6 py-5">
           <div className="section-shell surface-panel mb-8 rounded-[32px] p-7">
             <p className="text-sm font-medium text-[rgb(var(--text-muted))]">Recent activity</p>
-            <h1 className="mt-1 text-3xl font-bold">Pick up where your team left off</h1>
+            <h1 className="mt-1 text-3xl font-bold">Pick up where you left off</h1>
             <p className="mt-2 max-w-2xl text-sm text-[rgb(var(--text-muted))]">
-              Chronos keeps a lightweight memory of visited projects and timelines so resuming work
-              feels fast and low-friction.
+              Chronos keeps a lightweight memory of your recent work so it is easy to jump back in
+              after meetings, reviews, and context switches.
             </p>
           </div>
 
@@ -58,9 +76,10 @@ export default function RecentPage() {
           ) : (
             <div className="space-y-3">
               {recentItems.map((item) => (
-                <div
+                <Link
                   key={`${item.type}-${item.id}`}
-                  className="surface-panel rounded-[26px] p-4"
+                  href={getHref(item)}
+                  className="surface-panel block rounded-[26px] p-4 transition hover:-translate-y-0.5 hover:border-[rgb(var(--accent))]"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div>
@@ -78,7 +97,7 @@ export default function RecentPage() {
                       </p>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           )}

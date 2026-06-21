@@ -1,4 +1,4 @@
-import Link from 'next/link'
+﻿import Link from 'next/link'
 import { Suspense } from 'react'
 import { ArrowRight, Sparkles, Users } from 'lucide-react'
 import { AuthForm } from '@/components/saas/AuthForm'
@@ -10,20 +10,20 @@ export default function SignUpPage() {
         <div className="flex-1">
           <div className="inline-flex items-center gap-2 rounded-full border border-[rgb(var(--border))] bg-[rgba(var(--surface),0.76)] px-4 py-2 text-sm text-[rgb(var(--text-muted))]">
             <Users size={14} className="text-[rgb(var(--accent))]" />
-            Launch-ready SaaS foundation
+            Create your workspace
           </div>
           <h1 className="mt-5 max-w-2xl text-5xl font-bold tracking-tight">
-            Create the first real Chronos customer account.
+            Start planning with Chronos in minutes.
           </h1>
           <p className="mt-4 max-w-xl text-lg text-[rgb(var(--text-muted))]">
-            Signup now provisions a user, workspace, membership, starter subscription, seed project, and billing-ready backend.
+            Sign up to create your account, provision a workspace, and begin organizing launches,`r`n            research, and delivery work in one place.
           </p>
 
           <div className="mt-8 space-y-3">
             {[
-              'Provision account, workspace, plan, and seeded data in one flow',
-              'Invite teammates and grow into Stripe-backed subscriptions',
-              'Start with a polished SaaS shell around the original timeline engine',
+              'Create your account, workspace, plan, and starter project in one flow',
+              'Invite teammates when the workspace is ready to share',
+              'Move from idea to timeline without setup friction',
             ].map((item) => (
               <div key={item} className="surface-panel rounded-[24px] p-4 text-sm text-[rgb(var(--text-muted))]">
                 <div className="flex items-start gap-3">
@@ -62,3 +62,5 @@ export default function SignUpPage() {
     </main>
   )
 }
+
+
