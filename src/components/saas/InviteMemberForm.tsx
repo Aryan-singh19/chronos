@@ -8,12 +8,15 @@ export function InviteMemberForm() {
   const [email, setEmail] = useState('')
   const [role, setRole] = useState<(typeof ROLES)[number]>('MEMBER')
   const [message, setMessage] = useState<string | null>(null)
+  const [messageTone, setMessageTone] = useState<'success' | 'info' | 'error'>('info')
   const [loading, setLoading] = useState(false)
+  const [inviteUrl, setInviteUrl] = useState<string | null>(null)
 
   const submit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setLoading(true)
     setMessage(null)
+    setInviteUrl(null)
 
     try {
       const response = await fetch('/api/team/invitations', {
@@ -25,14 +28,29 @@ export function InviteMemberForm() {
       if (!response.ok || !data.ok) {
         throw new Error(data.error ?? 'Unable to send invitation.')
       }
-      setMessage(`Invite created for ${email}. Link: ${data.inviteUrl}`)
+
+      setMessageTone(data.status === 'existing' ? 'info' : 'success')
+      setInviteUrl(data.inviteUrl)
+      setMessage(
+        data.status === 'existing'
+          ? `An active invite already exists for ${email}. Reuse the existing link below.`
+          : `Invite created for ${email}. Share the secure link below with your teammate.`,
+      )
       setEmail('')
       setRole('MEMBER')
     } catch (reason) {
+      setMessageTone('error')
       setMessage(reason instanceof Error ? reason.message : 'Unable to send invitation.')
     } finally {
       setLoading(false)
     }
+  }
+
+  const copyInviteLink = async () => {
+    if (!inviteUrl) return
+    await navigator.clipboard.writeText(inviteUrl)
+    setMessageTone('success')
+    setMessage('Invite link copied to clipboard.')
   }
 
   return (
@@ -48,6 +66,7 @@ export function InviteMemberForm() {
           Team access
         </div>
       </div>
+
       <div className="mt-4 grid gap-3 md:grid-cols-[1fr_180px_auto]">
         <input
           value={email}
@@ -76,10 +95,33 @@ export function InviteMemberForm() {
           {loading ? 'Sending...' : 'Send invite'}
         </button>
       </div>
+
       {message && (
-        <p className="mt-3 rounded-2xl bg-[rgba(var(--surface-2),0.9)] px-4 py-3 text-xs text-[rgb(var(--text-muted))]">
-          {message}
-        </p>
+        <div
+          className={`mt-3 rounded-2xl px-4 py-3 text-xs ${
+            messageTone === 'error'
+              ? 'border border-red-200 bg-red-50 text-red-600 dark:border-red-950 dark:bg-red-950/40 dark:text-red-300'
+              : messageTone === 'success'
+                ? 'border border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-950 dark:bg-emerald-950/40 dark:text-emerald-300'
+                : 'bg-[rgba(var(--surface-2),0.9)] text-[rgb(var(--text-muted))]'
+          }`}
+        >
+          <p>{message}</p>
+          {inviteUrl && (
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              <code className="rounded-xl bg-[rgba(var(--surface),0.82)] px-3 py-2 text-[11px]">
+                {inviteUrl}
+              </code>
+              <button
+                type="button"
+                onClick={() => void copyInviteLink()}
+                className="rounded-xl border border-[rgb(var(--border))] px-3 py-2 text-[11px] font-semibold"
+              >
+                Copy link
+              </button>
+            </div>
+          )}
+        </div>
       )}
     </form>
   )

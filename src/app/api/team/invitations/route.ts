@@ -1,8 +1,8 @@
 import { randomUUID } from 'crypto'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
-import { prisma } from '@/lib/prisma'
 import { env } from '@/lib/env'
+import { prisma } from '@/lib/prisma'
 import { getCurrentMembership } from '@/lib/server/auth'
 
 const inviteSchema = z.object({
@@ -13,16 +13,39 @@ const inviteSchema = z.object({
 export async function POST(request: Request) {
   const membership = await getCurrentMembership()
   if (!membership || !['OWNER', 'ADMIN'].includes(membership.role)) {
-    return NextResponse.json({ ok: false, error: 'You do not have permission to invite members.' }, { status: 403 })
+    return NextResponse.json(
+      { ok: false, error: 'You do not have permission to invite members.' },
+      { status: 403 },
+    )
   }
 
   try {
     const body = inviteSchema.parse(await request.json())
+    const normalizedEmail = body.email.toLowerCase()
+
+    const existingInvitation = await prisma.invitation.findFirst({
+      where: {
+        workspaceId: membership.workspaceId,
+        email: normalizedEmail,
+        acceptedAt: null,
+        expiresAt: { gt: new Date() },
+      },
+      orderBy: { createdAt: 'desc' },
+    })
+
+    if (existingInvitation) {
+      return NextResponse.json({
+        ok: true,
+        status: 'existing',
+        inviteUrl: `${env.APP_URL}/signup?invite=${existingInvitation.token}`,
+      })
+    }
+
     const token = randomUUID()
     const invitation = await prisma.invitation.create({
       data: {
         workspaceId: membership.workspaceId,
-        email: body.email.toLowerCase(),
+        email: normalizedEmail,
         role: body.role,
         token,
         expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
@@ -43,6 +66,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       ok: true,
+      status: 'created',
       inviteUrl: `${env.APP_URL}/signup?invite=${invitation.token}`,
     })
   } catch (error) {

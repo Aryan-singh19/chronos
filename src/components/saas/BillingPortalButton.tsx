@@ -28,11 +28,15 @@ export function BillingPortalButton() {
       <button
         onClick={openPortal}
         disabled={loading}
-        className="rounded-full border border-[rgb(var(--border))] bg-[rgb(var(--surface))] px-4 py-2 text-sm font-semibold text-[rgb(var(--text))] transition hover:border-[rgb(var(--accent))] disabled:opacity-60"
+        className="rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--surface))] px-4 py-3 text-sm font-semibold text-[rgb(var(--text))] transition hover:border-[rgb(var(--accent))] disabled:opacity-60"
       >
         {loading ? 'Opening...' : 'Manage billing'}
       </button>
-      {error && <p className="mt-2 text-xs text-red-500">{error}</p>}
+      {error && (
+        <p className="mt-2 rounded-2xl border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-600 dark:border-red-950 dark:bg-red-950/40 dark:text-red-300">
+          {error}
+        </p>
+      )}
     </div>
   )
 }
