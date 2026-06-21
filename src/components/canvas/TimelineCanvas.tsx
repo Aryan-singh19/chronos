@@ -49,6 +49,7 @@ export function TimelineCanvas({ timelineId, presentationMode }: TimelineCanvasP
   const [lassoStart, setLassoStart] = useState<{ x: number; y: number } | null>(null)
   const [lassoEnd, setLassoEnd] = useState<{ x: number; y: number } | null>(null)
   const [showFAB, setShowFAB] = useState(true)
+  const shouldSnapToGrid = Boolean(settings?.profile)
 
   const bgClass = {
     dots: 'canvas-bg-dots',
@@ -57,7 +58,7 @@ export function TimelineCanvas({ timelineId, presentationMode }: TimelineCanvasP
     blank: 'canvas-bg-blank',
   }[settings?.profile.backgroundStyle ?? 'dots']
 
-  // ── Zoom with scroll wheel ──────────────────────────────────────────────────
+  // Zoom with scroll wheel
 
   const handleWheel = useCallback((e: WheelEvent) => {
     e.preventDefault()
@@ -79,7 +80,7 @@ export function TimelineCanvas({ timelineId, presentationMode }: TimelineCanvasP
     return () => el.removeEventListener('wheel', handleWheel)
   }, [handleWheel])
 
-  // ── Pointer events ──────────────────────────────────────────────────────────
+  // Pointer events
 
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
     if (e.target !== containerRef.current && !(e.target as Element).classList.contains('canvas-surface')) return
@@ -108,8 +109,12 @@ export function TimelineCanvas({ timelineId, presentationMode }: TimelineCanvasP
       const rect = containerRef.current!.getBoundingClientRect()
       const pos = screenToCanvas(e.clientX - rect.left, e.clientY - rect.top, canvasTransform)
       const snapSize = 24
-      const x = settings?.profile ? Math.round((pos.x - dragOffset.x) / snapSize) * snapSize : pos.x - dragOffset.x
-      const y = settings?.profile ? Math.round((pos.y - dragOffset.y) / snapSize) * snapSize : pos.y - dragOffset.y
+      const x = shouldSnapToGrid
+        ? Math.round((pos.x - dragOffset.x) / snapSize) * snapSize
+        : pos.x - dragOffset.x
+      const y = shouldSnapToGrid
+        ? Math.round((pos.y - dragOffset.y) / snapSize) * snapSize
+        : pos.y - dragOffset.y
       moveNode(dragNodeId, x, y)
     }
     if (lassoStart) {
@@ -117,7 +122,7 @@ export function TimelineCanvas({ timelineId, presentationMode }: TimelineCanvasP
       const pos = screenToCanvas(e.clientX - rect.left, e.clientY - rect.top, canvasTransform)
       setLassoEnd(pos)
     }
-  }, [isPanning, panStart, dragNodeId, dragOffset, canvasTransform, lassoStart, moveNode, setCanvasTransform])
+  }, [isPanning, panStart, dragNodeId, dragOffset, canvasTransform, lassoStart, moveNode, setCanvasTransform, shouldSnapToGrid])
 
   const handlePointerUp = useCallback(async () => {
     setIsPanning(false)
@@ -140,7 +145,7 @@ export function TimelineCanvas({ timelineId, presentationMode }: TimelineCanvasP
     }
   }, [dragNodeId, lassoStart, lassoEnd, timelineNodes, commitNodeMove])
 
-  // ── Double click to create node ─────────────────────────────────────────────
+  // Double click to create node
 
   const handleDoubleClick = useCallback(async (e: React.MouseEvent) => {
     if (presentationMode) return
@@ -150,7 +155,7 @@ export function TimelineCanvas({ timelineId, presentationMode }: TimelineCanvasP
     await createNode({ x: pos.x - 120, y: pos.y - 40, date: Date.now() })
   }, [presentationMode, canvasTransform, createNode])
 
-  // ── Touch: single finger pan, pinch zoom ───────────────────────────────────
+  // Touch: single finger pan, pinch zoom
 
   const lastTouchDistance = useRef(0)
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -296,3 +301,4 @@ export function TimelineCanvas({ timelineId, presentationMode }: TimelineCanvasP
     </div>
   )
 }
+

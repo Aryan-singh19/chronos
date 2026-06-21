@@ -43,7 +43,7 @@ const NAV_ITEMS = [
 
 function getPageLabel(pathname: string) {
   if (pathname.startsWith('/workspace')) return 'Workspace overview'
-  if (pathname.startsWith('/billing')) return 'Subscription and revenue controls'
+  if (pathname.startsWith('/billing')) return 'Plans and billing'
   if (pathname.startsWith('/team')) return 'People, roles, and invitations'
   if (pathname.startsWith('/dashboard')) return 'Projects and execution'
   if (pathname.startsWith('/search')) return 'Search and command navigation'
@@ -111,7 +111,7 @@ export function AppShell({ children, showSidebar = true }: AppShellProps) {
                 >
                   <Command size={14} />
                   <span className="flex-1 text-left">Search or run command</span>
-                  <kbd className="rounded-lg bg-[rgb(var(--border))] px-1.5 py-0.5 font-mono text-xs">⌘K</kbd>
+                  <kbd className="rounded-lg bg-[rgb(var(--border))] px-1.5 py-0.5 font-mono text-xs">Ctrl + K</kbd>
                 </button>
               </div>
 
@@ -119,10 +119,10 @@ export function AppShell({ children, showSidebar = true }: AppShellProps) {
                 <div className="rounded-2xl bg-slate-950 px-4 py-4 text-slate-50 shadow-[0_18px_40px_rgba(15,23,42,0.28)]">
                   <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-300">
                     <Sparkles size={13} />
-                    Live SaaS
+                    Product overview
                   </div>
                   <p className="mt-3 text-sm font-semibold">
-                    Timelines, collaboration, billing, and auth now share one polished shell.
+                    Keep planning, collaboration, billing, and account controls within one focused workspace.
                   </p>
                 </div>
               </div>
@@ -231,7 +231,7 @@ export function AppShell({ children, showSidebar = true }: AppShellProps) {
             className="flex items-center gap-1.5 rounded-xl bg-[rgb(var(--surface-2))] px-3 py-1.5 text-xs text-[rgb(var(--text-muted))] transition-all hover:bg-[rgb(var(--border))]"
           >
             <Command size={13} />
-            <span>⌘K</span>
+            <span>Ctrl + K</span>
           </button>
         </header>
 
@@ -274,3 +274,4 @@ export function AppShell({ children, showSidebar = true }: AppShellProps) {
     </div>
   )
 }
+
