@@ -53,7 +53,7 @@ export function InspectorPanel({ nodeId, timelineId, onClose }: InspectorPanelPr
     if (node && editor && editor.getHTML() !== node.description) {
       editor.commands.setContent(node.description ?? '')
     }
-  }, [node?.id])
+  }, [editor, node])
 
   const runAI = useCallback(async () => {
     if (!node) return
@@ -84,7 +84,7 @@ export function InspectorPanel({ nodeId, timelineId, onClose }: InspectorPanelPr
         <div className="flex-1 flex items-center justify-center text-center">
           <div>
             <p className="text-2xl mb-2">✦</p>
-            <p className="text-sm text-[rgb(var(--text-muted))]">Select a node to inspect</p>
+            <p className="text-sm text-[rgb(var(--text-muted))]">Select a node to view its details</p>
           </div>
         </div>
       </div>
@@ -106,7 +106,7 @@ export function InspectorPanel({ nodeId, timelineId, onClose }: InspectorPanelPr
       <div className="flex-1 overflow-y-auto">
         <div className="p-4 space-y-5">
 
-          {/* AI Analyze button */}
+          {/* AI analysis */}
           <motion.button
             whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}
             onClick={runAI}
@@ -114,7 +114,7 @@ export function InspectorPanel({ nodeId, timelineId, onClose }: InspectorPanelPr
             className="w-full flex items-center justify-center gap-2 py-2 rounded-xl bg-gradient-to-r from-blue-500 to-violet-500 text-white text-sm font-medium disabled:opacity-60"
           >
             {aiLoading ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
-            {aiLoading ? 'Analyzing…' : 'AI Analyze'}
+            {aiLoading ? 'Analyzing…' : 'Analyze node'}
           </motion.button>
 
           {/* AI suggestions */}
@@ -257,7 +257,7 @@ export function InspectorPanel({ nodeId, timelineId, onClose }: InspectorPanelPr
                     onClick={() => updateNode(node.id, { tags: node.tags.filter((t) => t !== tag) })}
                     className="text-[rgb(var(--text-muted))] hover:text-red-500 transition-colors"
                   >
-                    ×
+                    x
                   </button>
                 </span>
               ))}
@@ -315,3 +315,4 @@ export function InspectorPanel({ nodeId, timelineId, onClose }: InspectorPanelPr
     </div>
   )
 }
+

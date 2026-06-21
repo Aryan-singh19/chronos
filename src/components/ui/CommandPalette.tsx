@@ -5,8 +5,17 @@ import { useRouter } from 'next/navigation'
 import { Command } from 'cmdk'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
-  Search, FolderOpen, Clock, Settings, Moon, Sun,
-  Monitor, Keyboard, CreditCard, Users, BarChart3,
+  Search,
+  FolderOpen,
+  Clock,
+  Settings,
+  Moon,
+  Sun,
+  Monitor,
+  Keyboard,
+  CreditCard,
+  Users,
+  BarChart3,
 } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import { useProjectsStore } from '@/stores'
@@ -39,7 +48,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[9999] flex items-start justify-center pt-[15vh] px-4"
+        className="fixed inset-0 z-[9999] flex items-start justify-center px-4 pt-[15vh]"
         onClick={onClose}
       >
         <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
@@ -49,20 +58,22 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
           animate={{ scale: 1, y: 0, opacity: 1 }}
           exit={{ scale: 0.95, y: -10, opacity: 0 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-          onClick={(e) => e.stopPropagation()}
+          onClick={(event) => event.stopPropagation()}
           className="relative w-full max-w-xl"
         >
-          <Command className="rounded-2xl overflow-hidden shadow-2xl border border-[rgb(var(--border))] bg-[rgb(var(--surface))]">
-            <div className="flex items-center gap-3 px-4 border-b border-[rgb(var(--border))]">
+          <Command className="overflow-hidden rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--surface))] shadow-2xl">
+            <div className="flex items-center gap-3 border-b border-[rgb(var(--border))] px-4">
               <Search size={16} className="text-[rgb(var(--text-muted))]" />
               <Command.Input
                 value={search}
                 onValueChange={setSearch}
                 placeholder="Search projects, run commands…"
-                className="flex-1 py-4 bg-transparent outline-none text-[rgb(var(--text))] placeholder-[rgb(var(--text-muted))] text-sm"
+                className="flex-1 bg-transparent py-4 text-sm text-[rgb(var(--text))] outline-none placeholder-[rgb(var(--text-muted))]"
                 autoFocus
               />
-              <kbd className="text-xs text-[rgb(var(--text-muted))] bg-[rgb(var(--surface-2))] px-2 py-1 rounded font-mono">ESC</kbd>
+              <kbd className="rounded bg-[rgb(var(--surface-2))] px-2 py-1 font-mono text-xs text-[rgb(var(--text-muted))]">
+                ESC
+              </kbd>
             </div>
 
             <Command.List className="max-h-[380px] overflow-y-auto p-2">
@@ -70,28 +81,45 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                 No results found.
               </Command.Empty>
 
-              {/* Projects */}
               {projects.length > 0 && (
-                <Command.Group heading={<span className="px-2 py-1 text-xs font-semibold text-[rgb(var(--text-muted))] uppercase tracking-wider">Projects</span>}>
-                  {projects.slice(0, 5).map((p) => (
+                <Command.Group
+                  heading={
+                    <span className="px-2 py-1 text-xs font-semibold uppercase tracking-wider text-[rgb(var(--text-muted))]">
+                      Projects
+                    </span>
+                  }
+                >
+                  {projects.slice(0, 5).map((project) => (
                     <Command.Item
-                      key={p.id}
-                      value={`project ${p.name}`}
-                      onSelect={() => run(() => router.push(`/project/${p.id}`))}
-                      className="flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer text-sm aria-selected:bg-[rgb(var(--surface-2))]"
+                      key={project.id}
+                      value={`project ${project.name}`}
+                      onSelect={() => run(() => router.push(`/project/${project.id}`))}
+                      className="cursor-pointer rounded-xl px-3 py-2.5 text-sm aria-selected:bg-[rgb(var(--surface-2))]"
                     >
-                      <div className="w-6 h-6 rounded-lg flex items-center justify-center text-white text-xs font-bold" style={{ background: p.color }}>
-                        {p.name[0].toUpperCase()}
+                      <div className="flex items-center gap-3">
+                        <div
+                          className="flex h-6 w-6 items-center justify-center rounded-lg text-xs font-bold text-white"
+                          style={{ background: project.color }}
+                        >
+                          {project.name[0].toUpperCase()}
+                        </div>
+                        <span className="flex-1 truncate">{project.name}</span>
+                        <span className="text-xs text-[rgb(var(--text-muted))]">
+                          {project.timelineIds.length} timelines
+                        </span>
                       </div>
-                      <span className="flex-1 truncate">{p.name}</span>
-                      <span className="text-xs text-[rgb(var(--text-muted))]">{p.timelineIds.length} timelines</span>
                     </Command.Item>
                   ))}
                 </Command.Group>
               )}
 
-              {/* Navigation */}
-              <Command.Group heading={<span className="px-2 py-1 text-xs font-semibold text-[rgb(var(--text-muted))] uppercase tracking-wider">Navigate</span>}>
+              <Command.Group
+                heading={
+                  <span className="px-2 py-1 text-xs font-semibold uppercase tracking-wider text-[rgb(var(--text-muted))]">
+                    Navigate
+                  </span>
+                }
+              >
                 {[
                   { icon: BarChart3, label: 'Workspace Overview', action: () => router.push('/workspace') },
                   { icon: FolderOpen, label: 'Go to Dashboard', action: () => router.push('/dashboard') },
@@ -104,7 +132,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                     key={item.label}
                     value={item.label}
                     onSelect={() => run(item.action)}
-                    className="flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer text-sm aria-selected:bg-[rgb(var(--surface-2))]"
+                    className="flex cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-sm aria-selected:bg-[rgb(var(--surface-2))]"
                   >
                     <item.icon size={16} className="text-[rgb(var(--text-muted))]" />
                     {item.label}
@@ -112,8 +140,13 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                 ))}
               </Command.Group>
 
-              {/* Theme */}
-              <Command.Group heading={<span className="px-2 py-1 text-xs font-semibold text-[rgb(var(--text-muted))] uppercase tracking-wider">Theme</span>}>
+              <Command.Group
+                heading={
+                  <span className="px-2 py-1 text-xs font-semibold uppercase tracking-wider text-[rgb(var(--text-muted))]">
+                    Theme
+                  </span>
+                }
+              >
                 {[
                   { icon: Sun, label: 'Switch to Light Mode', action: () => setTheme('light') },
                   { icon: Moon, label: 'Switch to Dark Mode', action: () => setTheme('dark') },
@@ -123,7 +156,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                     key={item.label}
                     value={item.label}
                     onSelect={() => run(item.action)}
-                    className="flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer text-sm aria-selected:bg-[rgb(var(--surface-2))]"
+                    className="flex cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-sm aria-selected:bg-[rgb(var(--surface-2))]"
                   >
                     <item.icon size={16} className="text-[rgb(var(--text-muted))]" />
                     {item.label}
@@ -131,12 +164,17 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                 ))}
               </Command.Group>
 
-              {/* Actions */}
-              <Command.Group heading={<span className="px-2 py-1 text-xs font-semibold text-[rgb(var(--text-muted))] uppercase tracking-wider">Actions</span>}>
+              <Command.Group
+                heading={
+                  <span className="px-2 py-1 text-xs font-semibold uppercase tracking-wider text-[rgb(var(--text-muted))]">
+                    Actions
+                  </span>
+                }
+              >
                 <Command.Item
                   value="keyboard shortcuts"
                   onSelect={() => run(() => router.push('/settings?tab=shortcuts'))}
-                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer text-sm aria-selected:bg-[rgb(var(--surface-2))]"
+                  className="flex cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-sm aria-selected:bg-[rgb(var(--surface-2))]"
                 >
                   <Keyboard size={16} className="text-[rgb(var(--text-muted))]" />
                   View Keyboard Shortcuts
@@ -144,10 +182,19 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
               </Command.Group>
             </Command.List>
 
-            <div className="px-4 py-2.5 border-t border-[rgb(var(--border))] flex items-center gap-4 text-xs text-[rgb(var(--text-muted))]">
-              <span className="flex items-center gap-1"><kbd className="font-mono bg-[rgb(var(--surface-2))] px-1.5 py-0.5 rounded">↑↓</kbd> navigate</span>
-              <span className="flex items-center gap-1"><kbd className="font-mono bg-[rgb(var(--surface-2))] px-1.5 py-0.5 rounded">↵</kbd> select</span>
-              <span className="flex items-center gap-1"><kbd className="font-mono bg-[rgb(var(--surface-2))] px-1.5 py-0.5 rounded">ESC</kbd> close</span>
+            <div className="flex items-center gap-4 border-t border-[rgb(var(--border))] px-4 py-2.5 text-xs text-[rgb(var(--text-muted))]">
+              <span className="flex items-center gap-1">
+                <kbd className="rounded bg-[rgb(var(--surface-2))] px-1.5 py-0.5 font-mono">↑↓</kbd>
+                navigate
+              </span>
+              <span className="flex items-center gap-1">
+                <kbd className="rounded bg-[rgb(var(--surface-2))] px-1.5 py-0.5 font-mono">Enter</kbd>
+                select
+              </span>
+              <span className="flex items-center gap-1">
+                <kbd className="rounded bg-[rgb(var(--surface-2))] px-1.5 py-0.5 font-mono">ESC</kbd>
+                close
+              </span>
             </div>
           </Command>
         </motion.div>
