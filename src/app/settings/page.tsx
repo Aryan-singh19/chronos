@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -60,7 +60,7 @@ export default function SettingsPage() {
               Product settings
             </div>
             <p className="mt-3 text-sm text-slate-300">
-              Tune the local workspace experience without losing the premium SaaS feel.
+              Adjust the workspace experience, visuals, and safety defaults for your team.
             </p>
           </div>
 
@@ -91,8 +91,8 @@ export default function SettingsPage() {
                 <p className="text-sm font-medium text-[rgb(var(--text-muted))]">Workspace settings</p>
                 <h1 className="mt-1 text-3xl font-bold">Preferences and personalization</h1>
                 <p className="mt-2 max-w-2xl text-sm text-[rgb(var(--text-muted))]">
-                  Refine the visual system, editing ergonomics, backup behavior, and local security posture
-                  for your Chronos workspace.
+                  Refine the visual system, editing ergonomics, backup behavior, and workspace
+                  security settings for your Chronos environment.
                 </p>
               </div>
 
@@ -130,7 +130,7 @@ export default function SettingsPage() {
                       </div>
                       <div>
                         <p className="font-semibold">{profile.name}</p>
-                        <p className="text-sm text-[rgb(var(--text-muted))]">Local workspace operator</p>
+                        <p className="text-sm text-[rgb(var(--text-muted))]">Workspace owner</p>
                       </div>
                     </div>
                   </div>
@@ -256,7 +256,7 @@ export default function SettingsPage() {
                   <div className="surface-panel rounded-[28px] p-6">
                     <h2 className="text-xl font-bold">Keyboard shortcuts</h2>
                     <p className="mt-2 text-sm text-[rgb(var(--text-muted))]">
-                      These shortcuts keep creation and navigation fast while preserving the product’s local-first editing feel.
+                      These shortcuts keep creation and navigation fast across dense planning work.
                     </p>
                   </div>
                   <div className="surface-panel rounded-[28px] p-4">
@@ -322,7 +322,7 @@ export default function SettingsPage() {
                   <div className="surface-panel rounded-[28px] p-6">
                     <h2 className="text-xl font-bold">Security</h2>
                     <p className="mt-2 text-sm text-[rgb(var(--text-muted))]">
-                      Chronos stays local-first, but you can still tighten protection for the machine it runs on.
+                      Add another layer of protection for the device and workspace where Chronos runs.
                     </p>
                   </div>
 
@@ -351,21 +351,21 @@ export default function SettingsPage() {
                 <div className="max-w-2xl space-y-6">
                   <div className="rounded-[28px] bg-slate-950 p-6 text-slate-50 shadow-[0_24px_64px_rgba(15,23,42,0.28)]">
                     <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-[22px] bg-blue-600 text-2xl">
-                      ⏱
+                      ?
                     </div>
                     <h2 className="text-2xl font-bold">Chronos Cloud</h2>
                     <p className="mt-2 text-sm text-slate-300">Timeline intelligence for teams that ship.</p>
                     <p className="mt-3 text-xs uppercase tracking-[0.16em] text-slate-400">
-                      Version 1.0.0 · Local-first core · SaaS-ready shell
+                      Version 1.0.0 · Collaborative workspace · Planning system
                     </p>
                   </div>
 
                   <div className="surface-panel rounded-[28px] p-6">
                     <div className="space-y-2 text-sm text-[rgb(var(--text-muted))]">
-                      <p>✓ Local-first workspace with export-friendly architecture</p>
-                      <p>✓ Auth, memberships, billing, and production routing now integrated</p>
-                      <p>✓ Progressive Web App support and offline-friendly foundations</p>
-                      <p>✓ Designed to feel launch-ready without losing product velocity</p>
+                      <p>? Local-first workspace with export-friendly structure</p>
+                      <p>? Auth, memberships, billing, and team access in one product</p>
+                      <p>? Progressive Web App support with offline-friendly foundations</p>
+                      <p>? Focused on calm planning, clean navigation, and clear product feedback</p>
                     </div>
                   </div>
                 </div>
@@ -377,3 +377,5 @@ export default function SettingsPage() {
     </AppShell>
   )
 }
+
+

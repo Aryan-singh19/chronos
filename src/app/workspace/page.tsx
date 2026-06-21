@@ -24,8 +24,8 @@ export default async function WorkspacePage() {
                 <p className="text-sm font-medium text-[rgb(var(--text-muted))]">Workspace overview</p>
                 <h1 className="mt-1 text-3xl font-bold">{overview.workspace.name}</h1>
                 <p className="mt-2 max-w-2xl text-sm text-[rgb(var(--text-muted))]">
-                  Signed in as {membership.user.name}. Your workspace is operating on the{' '}
-                  {overview.planLabel} plan with live auth, billing, and collaboration controls.
+                  Signed in as {membership.user.name}. Your workspace is on the {overview.planLabel}{' '}
+                  plan with billing, team access, and product controls ready to use.
                 </p>
               </div>
               <div className="rounded-[24px] border border-[rgb(var(--border))] bg-[rgba(var(--surface),0.8)] px-5 py-4 text-right">
@@ -77,12 +77,12 @@ export default async function WorkspacePage() {
             </div>
 
             <div className="rounded-[28px] bg-slate-950 p-6 text-slate-50 shadow-[0_24px_64px_rgba(15,23,42,0.28)]">
-              <p className="text-sm font-medium text-slate-400">Workspace posture</p>
+              <p className="text-sm font-medium text-slate-400">Workspace readiness</p>
               <div className="mt-5 space-y-4">
                 {[
                   {
                     icon: ShieldCheck,
-                    title: 'Secure identity',
+                    title: 'Secure access',
                     detail: 'Protected sessions and role-aware memberships are active.',
                   },
                   {
@@ -92,8 +92,8 @@ export default async function WorkspacePage() {
                   },
                   {
                     icon: CreditCard,
-                    title: 'Revenue rails',
-                    detail: 'Stripe checkout and billing portal are production-wired.',
+                    title: 'Billing controls',
+                    detail: 'Checkout and billing portal flows are connected for workspace upgrades.',
                   },
                 ].map((item) => (
                   <div key={item.title} className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4">

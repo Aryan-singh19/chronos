@@ -24,7 +24,7 @@ export default async function TeamPage() {
             <p className="text-sm font-medium text-[rgb(var(--text-muted))]">Team workspace</p>
             <h1 className="mt-1 text-3xl font-bold">Members and invitations</h1>
             <p className="mt-2 text-sm text-[rgb(var(--text-muted))]">
-              Manage the people side of Chronos with roles, invites, and workspace ownership.
+              Invite collaborators, review access, and keep everyone aligned on the right workspace.
             </p>
           </div>
 
@@ -54,7 +54,9 @@ export default async function TeamPage() {
             <p className="text-sm font-medium text-[rgb(var(--text-muted))]">Pending invites</p>
             <div className="mt-4 space-y-3">
               {invitations.length === 0 ? (
-                <p className="text-sm text-[rgb(var(--text-muted))]">No pending invitations right now.</p>
+                <p className="text-sm text-[rgb(var(--text-muted))]">
+                  No pending invitations right now. Send one when a teammate is ready to join.
+                </p>
               ) : (
                 invitations.map((invite) => (
                   <div

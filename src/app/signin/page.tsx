@@ -1,4 +1,4 @@
-import Link from 'next/link'
+﻿import Link from 'next/link'
 import { Suspense } from 'react'
 import { ArrowRight, ShieldCheck, Sparkles } from 'lucide-react'
 import { AuthForm } from '@/components/saas/AuthForm'
@@ -13,18 +13,18 @@ export default function SignInPage() {
             Secure workspace access
           </div>
           <h1 className="mt-5 max-w-2xl text-5xl font-bold tracking-tight">
-            The timeline engine now has real accounts, workspaces, and revenue rails.
+            Welcome back to your planning workspace.
           </h1>
           <p className="mt-4 max-w-xl text-lg text-[rgb(var(--text-muted))]">
-            Sign in to your SaaS workspace and manage product launches, team members, and billing from one place.
+            Sign in to manage timelines, review recent work, invite teammates, and handle billing`r`n            from one place.
           </p>
 
           <div className="mt-8 grid gap-3 sm:grid-cols-2">
             {[
               'Protected sessions with workspace context',
-              'Stripe billing and portal access built in',
-              'Team roles, invites, and audit-ready actions',
-              'Local-first product core with SaaS overlays',
+              'Billing and plan management when you need it',
+              'Team roles, invites, and shared access controls',
+              'Fast local-first planning with a polished product shell',
             ].map((item) => (
               <div key={item} className="surface-panel rounded-[24px] p-4 text-sm text-[rgb(var(--text-muted))]">
                 <div className="flex items-start gap-3">
@@ -63,3 +63,5 @@ export default function SignInPage() {
     </main>
   )
 }
+
+
