@@ -292,7 +292,7 @@ export function TimelineCanvas({ timelineId, presentationMode }: TimelineCanvasP
             animate={{ opacity: 1, scale: 1 }}
             className="text-center"
           >
-            <p className="text-2xl mb-2">✦</p>
+            <p className="text-2xl mb-2">Ã¢Å“Â¦</p>
             <p className="font-semibold text-[rgb(var(--text-muted))]">Double-click to add your first event</p>
             <p className="text-sm text-[rgb(var(--text-muted))] mt-1 opacity-60">or use the + button</p>
           </motion.div>

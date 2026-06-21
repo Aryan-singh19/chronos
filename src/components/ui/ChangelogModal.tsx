@@ -12,13 +12,13 @@ const CHANGELOG = [
     changes: [
       { type: 'new' as const, text: 'Infinite 2D canvas with pan, zoom, and grid snapping' },
       { type: 'new' as const, text: 'Multiple views: Timeline, Gantt, Kanban, Calendar' },
-      { type: 'new' as const, text: 'AI-powered smart tagging, summaries & date inference' },
+      { type: 'new' as const, text: 'AI-powered smart tagging, summaries, and date inference' },
       { type: 'new' as const, text: 'Full offline PWA support with IndexedDB storage' },
       { type: 'new' as const, text: 'Export to JSON, CSV, PDF, and HTML' },
       { type: 'new' as const, text: 'Rich text editor with code blocks and formatting' },
-      { type: 'new' as const, text: 'Command palette (⌘K) for fast navigation' },
-      { type: 'new' as const, text: 'Version history / snapshots for timelines' },
-      { type: 'new' as const, text: 'Dark/light/system theme support' },
+      { type: 'new' as const, text: 'Command palette (Ctrl + K) for fast navigation' },
+      { type: 'new' as const, text: 'Version history and snapshots for timelines' },
+      { type: 'new' as const, text: 'Dark, light, and system theme support' },
     ],
   },
 ]
@@ -48,7 +48,7 @@ export function ChangelogModal() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[9998] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
+          className="fixed inset-0 z-[9998] flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm"
           onClick={handleClose}
         >
           <motion.div
@@ -56,37 +56,38 @@ export function ChangelogModal() {
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.92, opacity: 0 }}
             transition={{ type: 'spring', damping: 22, stiffness: 280 }}
-            onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-lg bg-[rgb(var(--surface))] rounded-2xl border border-[rgb(var(--border))] shadow-2xl overflow-hidden"
+            onClick={(event) => event.stopPropagation()}
+            className="w-full max-w-lg overflow-hidden rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--surface))] shadow-2xl"
           >
-            {/* Header */}
             <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-6 text-white">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/20">
                     <Sparkles size={20} />
                   </div>
                   <div>
-                    <h2 className="font-bold text-lg">What&apos;s New in Chronos</h2>
-                    <p className="text-blue-200 text-sm">Version 1.0.0 — Initial Release 🎉</p>
+                    <h2 className="text-lg font-bold">What&apos;s New in Chronos</h2>
+                    <p className="text-sm text-blue-200">Version 1.0.0 — Initial release</p>
                   </div>
                 </div>
-                <button onClick={handleClose} className="p-2 rounded-xl hover:bg-white/20 transition-colors">
+                <button
+                  onClick={handleClose}
+                  className="rounded-xl p-2 transition-colors hover:bg-white/20"
+                >
                   <X size={18} />
                 </button>
               </div>
             </div>
 
-            {/* Content */}
-            <div className="p-6 max-h-80 overflow-y-auto">
-              {CHANGELOG[0].changes.map((change, i) => {
+            <div className="max-h-80 overflow-y-auto p-6">
+              {CHANGELOG[0].changes.map((change, index) => {
                 const Icon = typeIcons[change.type]
                 return (
                   <motion.div
-                    key={i}
+                    key={index}
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.04 }}
+                    transition={{ delay: index * 0.04 }}
                     className="flex items-start gap-3 py-2"
                   >
                     <Icon size={14} className={`mt-0.5 shrink-0 ${typeColors[change.type]}`} />
@@ -96,15 +97,17 @@ export function ChangelogModal() {
               })}
             </div>
 
-            {/* Footer */}
-            <div className="px-6 py-4 border-t border-[rgb(var(--border))] flex items-center justify-between">
-              <p className="text-xs text-[rgb(var(--text-muted))]">Built with ♥ · Local-first · Zero cost</p>
+            <div className="flex items-center justify-between border-t border-[rgb(var(--border))] px-6 py-4">
+              <p className="text-xs text-[rgb(var(--text-muted))]">
+                Built with care · Local-first · Zero cost
+              </p>
               <motion.button
-                whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={handleClose}
-                className="bg-blue-600 text-white px-5 py-2 rounded-xl text-sm font-medium hover:bg-blue-700 transition-colors"
+                className="rounded-xl bg-blue-600 px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
               >
-                Let&apos;s Go! 🚀
+                Let&apos;s go
               </motion.button>
             </div>
           </motion.div>
